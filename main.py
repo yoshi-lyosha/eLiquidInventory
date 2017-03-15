@@ -2,14 +2,19 @@ from eLiquid import ELiquid
 from user import User
 
 
+# def output_available_recipes(user, ELiquids_list):
+#     for ELiquid in user.show_available_liquid_recipes(ELiquids_list):
+#         print(ELiquid.name, ELiquid.ingredients)
+
 if __name__ == '__main__':
+    ELiquids_list = []
     user1 = User('Fedos')
-    user2 = User('Koresh')
-    user3 = User('Olga')
-    dragonblood = ELiquid("Dragon blood")
-    print(dragonblood.name)
-    dragonblood.set_ingredients(['sweet', 'shit', 'dragon', 'strawberry'])
-    print(dragonblood.ingredients)
-    print(dragonblood)
+    dragon_blood = ELiquid('dragon blood', ['strawberry', 'vanilla'])
+    ELiquids_list.append(dragon_blood)
+    strawberry = ELiquid('strawberry', ['strawberry', 'guano'])
+    ELiquids_list.append(strawberry)
     user1.add_flavor('strawberry')
-    print(user1.name, user1.flavors)
+    user1.add_flavor('vanilla')
+    user1.add_flavor('huila')
+    user1.show_flavors()
+    user1.show_available_liquid_recipes(ELiquids_list)
