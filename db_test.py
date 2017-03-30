@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 
+
 def main():
     itchy_trigger_finger_niggers = True
     while itchy_trigger_finger_niggers:
@@ -27,57 +28,58 @@ def main():
 
 def insert():
     try:
-        flavoringName = input('Enter the Flavoring name :')
-        flavoringProducer = input('Enter the flavoring Producer :')
+        flavoring_name = input('Enter the Flavoring name :')
+        flavoring_producer = input('Enter the flavoring Producer :')
         db.Flavorings.insert_one(
             {
-                flavoringName: {
-                    "producer": flavoringProducer
-                }
+                    "flavoringName": flavoring_name,
+                    "producer": flavoring_producer
             })
         print('Data inserted successfully')
     except Exception as e:
-        print('funk')
         print(str(e))
 
 
 def update():
     try:
-        criteria = input('Enter id to update')
-        flavoringName = input('Enter the Flavoring name :')
-        flavoringProducer = input('Enter the flavoring Producer :')
+        flavoring_name = input('Enter the Flavoring name :')
+        flavoring_producer = input('Enter the flavoring Producer :')
+        new_flavoring_name = input('Enter the new Flavoring name :')
+        new_flavoring_producer = input('Enter the new flavoring Producer :')
         db.Flavorings.update_one(
-            {"_id": criteria},
             {
+                "flavoringName": flavoring_name,
+                "producer": flavoring_producer
+            }, {
                 "$set": {
-                    flavoringName: {
-                        "producer": flavoringProducer
-                    }
+                    "flavoringName": new_flavoring_name,
+                    "producer": new_flavoring_producer
                 }
             })
         print('Data updated successfully')
     except Exception as e:
-        print('funk')
         print(str(e))
+
 
 def read():
     try:
-        empCol = db.Flavorings.find()
+        json_all_db = db.Flavorings.find()
         print('\n All data from Flavorings Database \n')
-        for emp in empCol:
-            print(emp)
-
+        for string in json_all_db:
+            print(string)
     except Exception as e:
         print(str(e))
 
 
 def delete():
     try:
-        criteria = input('Enter id to update')
-        db.Flavorings.delete_many({"_id": criteria})
-        print('Deletion successfully')
+        flavoring_name = input('Enter flavoring name to delete\n')
+        flavoring_producer = input('Enter flavoring producer to delete\n')
+        result = db.Flavorings.delete_many({
+            "flavoringName": flavoring_name,
+            "producer": flavoring_producer})
+        print('Items deleted: ', result.deleted_count)
     except Exception as e:
-        print('funk')
         print(str(e))
 
 
