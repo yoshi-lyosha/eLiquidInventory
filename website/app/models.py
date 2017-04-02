@@ -56,7 +56,8 @@ class ELiquid(db.Model):
 class ELiquidComposition(db.Model):
 
     __tablename__ = 'eLiquids_composition'
-    eliquid_id = db.Column(db.Integer, db.ForeignKey('eLiquids.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    eliquid_id = db.Column(db.Integer, db.ForeignKey('eLiquids.id'))
     flavor_id = db.Column(db.Integer, db.ForeignKey('Flavors.id'))
     quantity = db.Column(db.SmallInteger)
 
@@ -64,7 +65,8 @@ class ELiquidComposition(db.Model):
 class UserFlavorInventory(db.Model):
 
     __tablename__ = 'Users_Flavor_Inv'
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
     flavor_id = db.Column(db.Integer, db.ForeignKey('Flavors.id'))
     amount = db.Column(db.SmallInteger)
 
@@ -72,7 +74,8 @@ class UserFlavorInventory(db.Model):
 class UsersNicotineInventory(db.Model):
 
     __tablename__ = 'User_Nicotine_Inv'
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
     nicotine_id = db.Column(db.Integer, db.ForeignKey('Nicotine.id'))
     amount = db.Column(db.SmallInteger)
 
@@ -80,5 +83,6 @@ class UsersNicotineInventory(db.Model):
 class UsersFavouriteELiquids(db.Model):
 
     __tablename__ = 'Users_Favourite_eLiquids'
-    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
     eliquid_id = db.Column(db.Integer, db.ForeignKey('eLiquids.id'))
