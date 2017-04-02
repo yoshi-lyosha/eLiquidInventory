@@ -8,7 +8,14 @@ class User:
     def show_available_liquid_recipes(self, eliquids_list):
         available_recipes = []
         for ELiquid in eliquids_list:
-            if set(ELiquid.ingredients) & set(self.flavors.keys()) == set(ELiquid.ingredients):
+            # print(ELiquid.__dict__)
+            # print(ELiquid.ingredients)
+            ingredients_quantity = len(ELiquid.ingredients)
+            for ingredient, quantity in ELiquid.ingredients.items():
+                if ingredient in self.flavors:
+                    if quantity <= self.flavors.get(ingredient):
+                        ingredients_quantity -= 1
+            if ingredients_quantity == 0:
                 available_recipes.append(ELiquid.name)
         return available_recipes
 
