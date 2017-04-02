@@ -16,7 +16,7 @@ class User(db.Model):
     # eLiquids = db.relationship('ELiquid', backref='author', lazy='dynamic')
 
     def __repr__(self):
-        return '<User %r>' % (self.nickname)
+        return '<User %r>' % (self.user_name)
 
 
 class Nicotine(db.Model):
@@ -46,7 +46,7 @@ class ELiquid(db.Model):
     __tablename__ = 'eLiquids'
     id = db.Column(db.Integer, primary_key=True)
     eliquid_name = db.Column(db.String(120), unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
     status = db.Column(db.SmallInteger, default=ELIQUID.PUBLIC)
 
     def __repr__(self):
@@ -56,32 +56,29 @@ class ELiquid(db.Model):
 class ELiquidComposition(db.Model):
 
     __tablename__ = 'eLiquids_composition'
-    eliquid_id = db.Column(db.Integer, db.ForeignKey('eliquid.id'))
-    flavor_id = db.Column(db.Integer, db.ForeignKey('flavor.id'))
+    eliquid_id = db.Column(db.Integer, db.ForeignKey('eLiquids.id'), primary_key=True)
+    flavor_id = db.Column(db.Integer, db.ForeignKey('Flavors.id'))
     quantity = db.Column(db.SmallInteger)
 
 
 class UserFlavorInventory(db.Model):
 
     __tablename__ = 'Users_Flavor_Inv'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    flavor_id = db.Column(db.Integer, db.ForeignKey('flavor.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), primary_key=True)
+    flavor_id = db.Column(db.Integer, db.ForeignKey('Flavors.id'))
     amount = db.Column(db.SmallInteger)
 
 
 class UsersNicotineInventory(db.Model):
 
     __tablename__ = 'User_Nicotine_Inv'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    nicotine_id = db.Column(db.Integer, db.ForeignKey('nicotine.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), primary_key=True)
+    nicotine_id = db.Column(db.Integer, db.ForeignKey('Nicotine.id'))
     amount = db.Column(db.SmallInteger)
 
 
 class UsersFavouriteELiquids(db.Model):
 
     __tablename__ = 'Users_Favourite_eLiquids'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    eliquid_id = db.Column(db.Integer, db.ForeignKey('eliquid.id'))
-
-
-
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), primary_key=True)
+    eliquid_id = db.Column(db.Integer, db.ForeignKey('eLiquids.id'))
