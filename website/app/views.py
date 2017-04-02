@@ -1,6 +1,20 @@
+from flask import render_template
 from app import app
+from app.forms import LoginForm
 
 @app.route('/')
-@app.route('/indexxx')
+@app.route('/index')
 def index():
-    return "Hello, World!"
+    user = {'nickname': 'yoshi-lyosha'}
+    site_name = 'eLiquidInventory'
+    return render_template("index.html",
+        title = site_name,
+        user = user)
+
+
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    return render_template('login.html',
+                           title = 'Sign In',
+                           form = form)
