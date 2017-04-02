@@ -37,7 +37,7 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="10" y="10" name="Users">
+</datatypes><table x="574" y="87" name="Users">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Users_Flavor_Inv" row="user_id" />
@@ -63,35 +63,44 @@
 <part>id</part>
 </key>
 </table>
-<table x="257" y="499" name="eLiquids_composition">
-<row name="eLiquid_id" null="1" autoincrement="1">
+<table x="924" y="325" name="eLiquids_composition">
+<row name="id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="flavor_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="eLiquid_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="quantity" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
-<part>eLiquid_id</part>
+<part>id</part>
 </key>
 </table>
-<table x="264" y="63" name="Users_Flavor_Inv">
+<table x="193" y="414" name="Users_Flavor_Inv">
+<row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="flavor_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="Amount" null="1" autoincrement="0">
+<row name="amount" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
-<part>user_id</part>
+<part>id</part>
 </key>
 </table>
-<table x="262" y="243" name="User_Nicotine_Inv">
+<table x="186" y="141" name="User_Nicotine_Inv">
+<row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -102,10 +111,13 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
-<part>user_id</part>
+<part>id</part>
 </key>
 </table>
-<table x="263" y="161" name="Users_Favourite_eLiquids">
+<table x="917" y="161" name="Users_Favourite_eLiquids">
+<row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -113,13 +125,14 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
-<part>user_id</part>
+<part>id</part>
 </key>
 </table>
-<table x="13" y="415" name="eLiquids">
+<table x="577" y="492" name="eLiquids">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="eLiquids_composition" row="eLiquid_id" />
+<relation table="Users_Favourite_eLiquids" row="eLiquid_id" />
 </row>
 <row name="eLiquid_name" null="1" autoincrement="0">
 <datatype>VARCHAR(120)</datatype>
@@ -134,10 +147,12 @@
 <part>id</part>
 </key>
 </table>
-<table x="11" y="305" name="Flavors">
+<table x="575" y="382" name="Flavors">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<default>NULL</default><relation table="eLiquids_composition" row="flavor_id" />
+<relation table="Users_Flavor_Inv" row="flavor_id" />
+</row>
 <row name="flavor_name" null="1" autoincrement="0">
 <datatype>VARCHAR(64)</datatype>
 <default>NULL</default></row>
@@ -148,10 +163,11 @@
 <part>id</part>
 </key>
 </table>
-<table x="9" y="194" name="Nicotine">
+<table x="573" y="271" name="Nicotine">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default></row>
+<default>NULL</default><relation table="User_Nicotine_Inv" row="nicotine_id" />
+</row>
 <row name="producer_name" null="1" autoincrement="0">
 <datatype>VARCHAR(64)</datatype>
 <default>NULL</default></row>
