@@ -13,7 +13,7 @@ class User(db.Model):
     role = db.Column(db.SmallInteger, default=USER.USER)
     status = db.Column(db.SmallInteger, default=USER.NEW)
     # нужно ли это?
-    eLiquids = db.relationship('ELiquid', backref='author', lazy='dynamic')
+    # eLiquids = db.relationship('ELiquid', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
@@ -51,3 +51,37 @@ class ELiquid(db.Model):
 
     def __repr__(self):
         return '<Flavor %r>' % (self.eliquid_name)
+
+
+class ELiquidComposition(db.Model):
+
+    __tablename__ = 'eLiquids_composition'
+    eliquid_id = db.Column(db.Integer, db.ForeignKey('eliquid.id'))
+    flavor_id = db.Column(db.Integer, db.ForeignKey('flavor.id'))
+    quantity = db.Column(db.SmallInteger)
+
+
+class UserFlavorInventory(db.Model):
+
+    __tablename__ = 'Users_Flavor_Inv'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    flavor_id = db.Column(db.Integer, db.ForeignKey('flavor.id'))
+    amount = db.Column(db.SmallInteger)
+
+
+class UsersNicotineInventory(db.Model):
+
+    __tablename__ = 'User_Nicotine_Inv'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    nicotine_id = db.Column(db.Integer, db.ForeignKey('nicotine.id'))
+    amount = db.Column(db.SmallInteger)
+
+
+class UsersFavouriteELiquids(db.Model):
+
+    __tablename__ = 'Users_Favourite_eLiquids'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    eliquid_id = db.Column(db.Integer, db.ForeignKey('eliquid.id'))
+
+
+
