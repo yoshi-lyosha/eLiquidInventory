@@ -5,8 +5,17 @@
     <title>{{title}}</title>
 </head>
 <body>
-    <div>{{title}}: <a href="/index">Home</a></div>
+    <div>{{title}}: <a href="/index">Home</a>, <a href="/login">Log in</a></div>
     <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     {% block content %}{% endblock %}
     </body>
 </html>
