@@ -2,17 +2,30 @@ class User:
 
     def __init__(self, name):
         self.name = name
-        self.flavors = set()
+        self.flavors = {}
+        self.favorites = []
 
-    def show_available_liquid_recipes(self, ELiquids_list):
+    def show_available_liquid_recipes(self, eliquids_list):
         available_recipes = []
-        for ELiquid in ELiquids_list:
-            if ELiquid.ingredients & self.flavors == ELiquid.ingredients:
+        for ELiquid in eliquids_list:
+            if set(ELiquid.ingredients) & set(self.flavors.keys()) == set(ELiquid.ingredients):
                 available_recipes.append(ELiquid.name)
-        print("{user_name} can mix eLiquids: {available_recipes}".format(user_name=self.name, available_recipes=available_recipes))
+        return available_recipes
 
-    def add_flavor(self, flavor_name):
-        self.flavors.add(flavor_name)
+    def add_flavor(self, flavor_name, quantity):
+        self.flavors[flavor_name] = quantity
 
+    def edit_flavor(self, flavor_name, new_quantity):
+        self.flavors[flavor_name] = new_quantity
+        
     def show_flavors(self):
-        print("{user_name} has flavors: {flavors}".format(user_name=self.name, flavors=self.flavors))
+        return self.flavors
+
+    def add_to_favorites(self, eliquid):
+        self.favorites.append(eliquid)
+
+    def delete_from_favorites(self, eliquid):
+        self.favorites.remove(eliquid)
+
+    def show_favorites(self):
+        return self.favorites
