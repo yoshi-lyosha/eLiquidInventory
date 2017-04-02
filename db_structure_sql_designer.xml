@@ -51,7 +51,7 @@
 <datatype>VARCHAR(120)</datatype>
 <default>NULL</default></row>
 <row name="password" null="1" autoincrement="0">
-<datatype>VARCHAR(64)</datatype>
+<datatype>VARCHAR(120)</datatype>
 <default>NULL</default></row>
 <row name="role" null="1" autoincrement="0">
 <datatype>SMALLINT</datatype>
@@ -116,18 +116,18 @@
 <part>user_id</part>
 </key>
 </table>
-<table x="13" y="415" name="eLiquids_info">
+<table x="13" y="415" name="eLiquids">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="eLiquids_composition" row="eLiquid_id" />
 </row>
 <row name="eLiquid_name" null="1" autoincrement="0">
-<datatype>VARCHAR(64)</datatype>
+<datatype>VARCHAR(120)</datatype>
 <default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="private" null="1" autoincrement="0">
+<row name="status" null="1" autoincrement="0">
 <datatype>SMALLINT</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
@@ -148,7 +148,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="9" y="194" name="Nicotines">
+<table x="9" y="194" name="Nicotine">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
