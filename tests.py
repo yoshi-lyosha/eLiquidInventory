@@ -32,6 +32,6 @@ class UserEquationTestCase(unittest.TestCase):
         user1.add_flavor('huila', 1)
         self.assertEqual(user1.show_flavors(), {'strawberry': 1, 'vanilla': 1, 'huila': 1})
         self.assertEqual(user1.show_available_liquid_recipes(ELiquids_list), ['dragon blood'])
-        
+
 if __name__ == '__main__':
     unittest.main()
