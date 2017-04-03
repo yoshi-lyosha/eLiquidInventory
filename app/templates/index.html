@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Hello, {{user.name}}</h1>
+    <h2>You have these flavors:</h2>
+    {% for flavor, quantity in user.flavors.items() %}
+    <p>{{flavor}} - {{quantity}} ml</p>
+    {% endfor %}
+{% endblock %}
