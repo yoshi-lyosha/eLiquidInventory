@@ -40,8 +40,8 @@
 </datatypes><table x="574" y="87" name="Users">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Users_Flavor_Inv" row="user_id" />
-<relation table="User_Nicotine_Inv" row="user_id" />
+<default>NULL</default><relation table="Users_Flavoring_Inventories" row="user_id" />
+<relation table="User_Nicotine_Inventories" row="user_id" />
 <relation table="Users_Favourite_eLiquids" row="user_id" />
 <relation table="eLiquids" row="user_id" />
 </row>
@@ -68,33 +68,44 @@
 <part>email</part>
 </key>
 </table>
-<table x="1095" y="344" name="eLiquid_compositions">
+<table x="1095" y="344" name="eLiquids_compositions">
+<row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="eLiquid_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="flavor_id" null="1" autoincrement="0">
+<row name="flavoring_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="quantity" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
+<part>id</part>
 </key>
 </table>
-<table x="193" y="414" name="Users_Flavor_Inv">
+<table x="160" y="406" name="Users_Flavoring_Inventories">
+<row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="flavor_id" null="1" autoincrement="0">
+<row name="flavoring_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="amount" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
+<part>id</part>
 </key>
 </table>
-<table x="186" y="141" name="User_Nicotine_Inv">
+<table x="152" y="137" name="User_Nicotine_Inventories">
+<row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -105,9 +116,13 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
+<part>id</part>
 </key>
 </table>
 <table x="1095" y="152" name="Users_Favourite_eLiquids">
+<row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -115,15 +130,16 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
+<part>id</part>
 </key>
 </table>
 <table x="830" y="273" name="eLiquids">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="eLiquid_compositions" row="eLiquid_id" />
+<default>NULL</default><relation table="eLiquids_compositions" row="eLiquid_id" />
 <relation table="Users_Favourite_eLiquids" row="eLiquid_id" />
 </row>
-<row name="eLiquid_name" null="1" autoincrement="0">
+<row name="eliquid_name" null="1" autoincrement="0">
 <datatype>VARCHAR(120)</datatype>
 <default>NULL</default></row>
 <row name="user_id" null="1" autoincrement="0">
@@ -136,13 +152,13 @@
 <part>id</part>
 </key>
 </table>
-<table x="562" y="417" name="Flavors">
+<table x="562" y="417" name="Flavorings">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="eLiquid_compositions" row="flavor_id" />
-<relation table="Users_Flavor_Inv" row="flavor_id" />
+<default>NULL</default><relation table="eLiquids_compositions" row="flavoring_id" />
+<relation table="Users_Flavoring_Inventories" row="flavoring_id" />
 </row>
-<row name="flavor_name" null="1" autoincrement="0">
+<row name="flavoring_name" null="1" autoincrement="0">
 <datatype>VARCHAR(64)</datatype>
 <default>NULL</default></row>
 <row name="producer_name" null="1" autoincrement="0">
@@ -155,7 +171,7 @@
 <table x="566" y="285" name="Nicotine">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="User_Nicotine_Inv" row="nicotine_id" />
+<default>NULL</default><relation table="User_Nicotine_Inventories" row="nicotine_id" />
 </row>
 <row name="producer_name" null="1" autoincrement="0">
 <datatype>VARCHAR(64)</datatype>

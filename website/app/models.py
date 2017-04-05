@@ -12,7 +12,7 @@ class User(db.Model):
     password = db.Column(db.String(120))
     role = db.Column(db.SmallInteger, default=USER.USER)
     status = db.Column(db.SmallInteger, default=USER.NEW)
-    flavors_in_inventory = db.relationship('UserFlavorInventory', backref='user',
+    flavors_in_inventory = db.relationship('UsersFlavoringInventory', backref='user',
                                            lazy='dynamic', cascade='all')
     nicotine_in_inventory = db.relationship('UsersNicotineInventory', backref='user',
                                             lazy='dynamic', cascade='all')
@@ -38,27 +38,27 @@ class Nicotine(db.Model):
         return '<Nicotine %r>' % (self.producer_name)
 
 
-class Flavor(db.Model):
+class Flavoring(db.Model):
 
     # __tablename__ = 'Flavors'
     id = db.Column(db.Integer, primary_key=True)
-    flavor_name = db.Column(db.String(64))
+    flavoring_name = db.Column(db.String(64))
     producer_name = db.Column(db.String(64))
-    user_invs = db.relationship('UserFlavorInventory', backref='flavor',
+    user_invs = db.relationship('UsersFlavoringInventory', backref='flavoring',
                                 cascade='all', lazy='dynamic')
-    eliquids = db.relationship('ELiquidComposition', backref='flavor',
+    eliquids = db.relationship('ELiquidComposition', backref='flavoring',
                                cascade='all', lazy='dynamic')
 
     def __repr__(self):
         return '<Flavor %r Producer %r>' % (self.flavor_name, self.producer_name)
 
 
-class UserFlavorInventory(db.Model):
+class UsersFlavoringInventory(db.Model):
 
     # __tablename__ = 'Users_Flavor_Inventories'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    flavor_id = db.Column(db.Integer, db.ForeignKey('flavor.id'))
+    flavoring_id = db.Column(db.Integer, db.ForeignKey('flavoring.id'))
     amount = db.Column(db.SmallInteger)
 
     def __repr__(self):
@@ -95,7 +95,7 @@ class ELiquidComposition(db.Model):
     # __tablename__ = 'eLiquids_composition'
     id = db.Column(db.Integer, primary_key=True)
     eliquid_id = db.Column(db.Integer, db.ForeignKey('e_liquid.id'))
-    flavor_id = db.Column(db.Integer, db.ForeignKey('flavor.id'))
+    flavoring_id = db.Column(db.Integer, db.ForeignKey('flavoring.id'))
     quantity = db.Column(db.SmallInteger)
 
 
