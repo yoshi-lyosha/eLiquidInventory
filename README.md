@@ -1,1 +1,3 @@
-# eLiquidInventory
+eLiquidInventory
+
+It should be cool!
