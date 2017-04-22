@@ -1,5 +1,5 @@
 from website.app import db, models
-from website.app.users import constants as USER
+# from website.app.users import constants as USER
 from website.app.eliquids import constants as ELIQUID
 
 
@@ -241,6 +241,33 @@ def print_all_public_eliquids_with_composition():
         print(e)
 
 
+def add_eliquid_to_user_favorite(user, eliquid):
+    try:
+        print('-----------------')
+        print('Adding eLiquid "{}" to user {} favorites'.format(eliquid.eliquid_name, user.user_name))
+        usr_fav = models.UsersFavouriteELiquids(user=user, e_liquid=eliquid)
+        print('eLiquid "{}" added to user {} favorites'.format(eliquid.eliquid_name, user.user_name))
+        db.session.add(usr_fav)
+        db.session.commit()
+    except Exception as e:
+        print('Can\'t add eLiquid to favorites')
+        print(e)
+        db.session.rollback()
+        print('rollback')
+
+
+def print_users_favorits_eliquids(user):
+    try:
+        print('-----------------')
+        print('User\'s {} favorite eliquids:'.format(user.user_name))
+
+    except Exception as e:
+        print('Can\'t add eLiquid to favorites')
+        print(e)
+        db.session.rollback()
+        print('rollback')
+
+
 def run_auto_db_test_stage_1():
     """
     Тестирование функций добавления и вывода списков
@@ -335,6 +362,6 @@ def run_auto_db_test_stage_3():
         print('Test passed')
 
 
-run_auto_db_test_stage_1()
-run_auto_db_test_stage_2()
-run_auto_db_test_stage_3()
+# run_auto_db_test_stage_1()
+# run_auto_db_test_stage_2()
+# run_auto_db_test_stage_3()
