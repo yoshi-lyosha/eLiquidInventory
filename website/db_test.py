@@ -268,7 +268,7 @@ def print_users_favorits_eliquids(user):
         print('rollback')
 
 
-def run_auto_db_test_stage_1():
+def run_autotest_db_stage_1():
     """
     Тестирование функций добавления и вывода списков
     сущностей Юзер, Ароматизатор, Никотин
@@ -290,7 +290,7 @@ def run_auto_db_test_stage_1():
         print('Test passed')
 
 
-def run_auto_db_test_stage_2():
+def run_autotest_db_stage_2():
     """
     Тестирование функций добавления в инвентарь
     Ароматизаторов и Никотина
@@ -330,7 +330,7 @@ def run_auto_db_test_stage_2():
         print('Test passed')
 
 
-def run_auto_db_test_stage_3():
+def run_autotest_db_stage_3():
     """
     Тестирование функций добавления новых
     публичных и приватных жижек
@@ -362,6 +362,6 @@ def run_auto_db_test_stage_3():
         print('Test passed')
 
 
-# run_auto_db_test_stage_1()
-# run_auto_db_test_stage_2()
-# run_auto_db_test_stage_3()
+run_autotest_db_stage_1()
+run_autotest_db_stage_2()
+run_autotest_db_stage_3()
