@@ -1,16 +1,17 @@
 from website.app import db, models
 # from website.app.users import constants as USER
 from website.app.eliquids import constants as ELIQUID
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def user_gen():
     print('-----------------')
     print('Adding first user in database')
-    u = models.User(user_name='ALEXEY', email='ALEXEY@ALEXEY.ALEXEY', password='PESOS')
+    u = models.User(user_name='ALEXEY', email='ALEXEY@ALEXEY.ALEXEY', password=generate_password_hash('Qwer1234'))
     db.session.add(u)
     db.session.commit()
     print('Adding second user in database')
-    u = models.User(user_name='FEDOS', email='FEDOS@FEDOS.FEDOS', password='PESOS')
+    u = models.User(user_name='FEDOS', email='FEDOS@FEDOS.FEDOS', password=generate_password_hash('PESOS'))
     db.session.add(u)
     db.session.commit()
 
