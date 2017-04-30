@@ -1,0 +1,7 @@
+
+Докер на малине
+http://blog.alexellis.io/getting-started-with-docker-on-raspberry-pi/
+
+Описание супервизора
+https://ruhighload.com/post/Запуск+процессов+в+supervisor
+
