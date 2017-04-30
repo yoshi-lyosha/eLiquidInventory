@@ -3,8 +3,9 @@ MAINTAINER eLiquidInventory team
 
 RUN \
 	apt-get update && \
-	apt-get apt-get install -y -q python3.6-dev py-pip
+	apt-get install -y -q python-dev python-setuptools build-essential
 	
+RUN easy_install pip
 RUN pip install uwsgi
 
 #install requirements
