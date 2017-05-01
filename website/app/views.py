@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, g, url_for, session, request
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from app import app, db, models
-from app.forms import LoginForm, RegisterForm
+from app import app, db
+import models
+from forms import LoginForm, RegisterForm
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.eliquids import constants as ELIQUID
+from eliquids import constants as ELIQUID
 
 
 @app.before_request
