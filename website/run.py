@@ -1,5 +1,5 @@
 #!flask/bin/python
-website_path = '/website/'
+website_path = '~/website/'
 import sys
 if not website_path in sys.path:
 	sys.path.append(website_path)
