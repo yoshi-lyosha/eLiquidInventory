@@ -29,6 +29,6 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
-COPY ./website ~/website
+COPY ./website /website
 
 CMD ["/usr/bin/supervisord"]

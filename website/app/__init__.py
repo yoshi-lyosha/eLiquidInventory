@@ -3,7 +3,7 @@ from flask.ext.login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_object('website.config')
 db = SQLAlchemy(app)
 
 # lm = LoginManager()
