@@ -10,5 +10,4 @@ db = SQLAlchemy(app)
 # lm.init_app(app)
 # lm.login_view = 'login'
 
-from app import views, models
-
+from website.app import views, models

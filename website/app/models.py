@@ -1,6 +1,6 @@
-from app import db
-from users import constants as USER
-from eliquids import constants as ELIQUID
+from website.app import db
+from website.app.users import constants as USER
+from website.app.eliquids import constants as ELIQUID
 
 
 class User(db.Model):
