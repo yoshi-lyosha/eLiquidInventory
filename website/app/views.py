@@ -1,8 +1,9 @@
 from flask import render_template, flash, redirect, g, url_for, session, request
 from flask.ext.login import login_user, logout_user, current_user, login_required
-from website.app import app, db, models
-from website.app.forms import LoginForm, RegisterForm
+from app import app, db, models
+from app.forms import LoginForm, RegisterForm
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.eliquids import constants as ELIQUID
 
 
 @app.before_request
@@ -25,10 +26,29 @@ def index():
     else:
         user = g.user
     site_name = 'eLiquidInventory'
+    eliquid_list = models.ELiquid.query.filter_by(status=ELIQUID.PUBLIC)
     return render_template(
         "index.html",
         title=site_name,
-        user=user)
+        user=user,
+        eliquid_list=eliquid_list
+    )
+
+
+@app.route('/eliquids/<eliquid_id>')
+def eliquid_comp(eliquid_id):
+    site_name = 'eLiquidInventory'
+    composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
+    composition = []
+    for comp_field in composition_list:
+            composition.append([models.Flavoring.query.filter_by(id=comp_field.flavoring_id).first(),
+                                comp_field.quantity])
+    return render_template(
+        "eliquid_comp.html",
+        title=site_name,
+        composition=composition
+    )
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
