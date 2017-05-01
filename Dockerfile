@@ -1,18 +1,27 @@
 FROM resin/rpi-raspbian:latest
 MAINTAINER eLiquidInventory team
 
-RUN \
-	apt-get update && \
-	apt-get install -y -q python-dev python-setuptools build-essential
-	
-RUN easy_install pip
-RUN pip install uwsgi
+# Install required packages and remove the apt cache when done
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y -q \
+	python3 \	
+        python3-dev \
+        python3-setuptools \
+        python3-pip \
+        build-essential \
+        sqlite3  && \
+        pip3 install -U pip setuptools && \
+        rm -rf /var/lib/apt/lists/*
+
+# install uwsgi
+RUN pip3 install uwsgi
 
 #install requirements
 COPY requirements.txt /tmp/
-RUN pip install --requirement /tmp/requirements.txt
+RUN pip3 install --requirement /tmp/requirements.txt
 
-# Install Supervisor
+# Install Supervisor and remove the apt cache when done
 RUN apt-get update && apt-get install -y supervisor && rm -rf /var/lib/apt/lists/*
 
 # Custom Supervisord config
