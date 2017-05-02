@@ -10,6 +10,7 @@ RUN apt-get update && \
         python3-setuptools \
         python3-pip \
         build-essential \
+        supervisor \
         sqlite3  && \
         pip3 install -U pip setuptools && \
         rm -rf /var/lib/apt/lists/*
@@ -21,14 +22,14 @@ RUN pip3 install uwsgi
 COPY requirements.txt /tmp/
 RUN pip3 install --requirement /tmp/requirements.txt
 
-# Install Supervisor and remove the apt cache when done
-RUN apt-get update && apt-get install -y supervisor && rm -rf /var/lib/apt/lists/*
-
 # Custom Supervisord config
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
 COPY ./website /website
+
+CMD ["python3", "/website/db_create.py"]
+CMD ["python3", "/website/db_migrate.py"]
 
 CMD ["/usr/bin/supervisord"]
