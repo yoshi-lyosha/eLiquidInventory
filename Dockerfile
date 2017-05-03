@@ -29,7 +29,4 @@ EXPOSE 80
 
 COPY ./website /website
 
-CMD ["python3", "/website/db_create.py"]
-CMD ["python3", "/website/db_migrate.py"]
-
 CMD ["/usr/bin/supervisord"]
