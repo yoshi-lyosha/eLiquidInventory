@@ -1,15 +1,16 @@
-/index
-	eliquid_list
-	
-/register
-/login
-/flavors_list
-/nickotine_list
-/create_new_eliquid
+[+]/index = eliquid_list
+[+]/eliquids/<eliquid_id> = composition
+[+]/register
+[+]/login
+[+]/logout
+[ ]/flavors_list
+[ ]/nickotine_list
 
-/%user%_nickotine_inventory
-/%user%_flavorings_inventory
-/%user%_favorite_eliquids
-/%user%_private_eliquids
+[ ]/create_new_eliquid
 
-/eliquid_craft
+[ ]/%user%_nickotine_inventory
+[ ]/%user%_flavorings_inventory
+[ ]/%user%_favorite_eliquids
+[ ]/%user%_private_eliquids
+
+[ ]/eliquid_craft

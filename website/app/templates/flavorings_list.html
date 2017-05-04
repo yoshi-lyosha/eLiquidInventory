@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Here is the list of Flavorings</h3>
+    {% if flavorings_list %}
+        <ul>
+            {% for flavoring in flavorings_list %}
+            <li>
+                <p>{{ flavoring.flavoring_name }} by {{ flavoring.producer_name }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No eLiquids are available.</p>
+        {% endif %}
+
+{% endblock %}

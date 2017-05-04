@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Hello, {{user.user_name}}!</h1>
-
     <h3>Here is the list of eLiquids</h3>
     {% if eliquid_list %}
         <ul>
@@ -15,5 +13,4 @@
         {% else %}
             <p>No eLiquids are available.</p>
         {% endif %}
-
 {% endblock %}

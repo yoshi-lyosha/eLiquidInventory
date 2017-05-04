@@ -1,5 +1,4 @@
 from flask import render_template, flash, redirect, g, url_for, session, request
-from flask.ext.login import login_user, logout_user, current_user, login_required
 from website.app import app, db
 from website.app import models
 from website.app.forms import LoginForm, RegisterForm
@@ -20,8 +19,6 @@ def before_request():
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    # if "flask_login.mixins.AnonymousUserMixin object" in str(g.user):
-    # print(session['user_id'])
     if g.user is None:
         user = {'user_name': 'Guest'}
     else:
@@ -40,14 +37,14 @@ def index():
 def eliquid_comp(eliquid_id):
     site_name = 'eLiquidInventory'
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
-    composition = []
-    for comp_field in composition_list:
-            composition.append([models.Flavoring.query.filter_by(id=comp_field.flavoring_id).first(),
-                                comp_field.quantity])
+    # composition = []
+    # for comp_field in composition_list:
+    #         composition.append([models.Flavoring.query.filter_by(id=comp_field.flavoring_id).first(),
+    #                             comp_field.quantity])
     return render_template(
         "eliquid_comp.html",
         title=site_name,
-        composition=composition
+        composition=composition_list
     )
 
 
@@ -112,3 +109,45 @@ def logout():
     session.pop('user_id', None)
     print('User {} has been logged out. Goodbye!'.format(user.user_name))
     return redirect(url_for('index'))
+
+
+@app.route('/flavorings_list')
+def flavorings_list_page():
+    """
+    List of all flavorings
+    :return: 
+    """
+    if g.user is None:
+        user = {'user_name': 'Guest'}
+    else:
+        user = g.user
+    site_name = 'eLiquidInventory'
+    flavorings_list = models.Flavoring.query.all()
+
+    return render_template(
+        "flavorings_list.html",
+        title=site_name,
+        user=user,
+        flavorings_list=flavorings_list
+    )
+
+
+@app.route('/nicotine_list')
+def nicotine_list_page():
+    """
+    List of all nicotine
+    :return: 
+    """
+    if g.user is None:
+        user = {'user_name': 'Guest'}
+    else:
+        user = g.user
+    site_name = 'eLiquidInventory'
+    nicotine_list = models.Nicotine.query.all()
+
+    return render_template(
+        "nicotine_list.html",
+        title=site_name,
+        user=user,
+        nicotine_list=nicotine_list
+    )
