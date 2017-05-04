@@ -66,6 +66,7 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             session['user_id'] = user.id
             flash('Welcome, {}'.format(user.user_name))
+            print('User {} has been logged in'.format(user.user_name))
             return redirect(url_for('index'))
     return render_template('login.html',
                            title='Sign In',
@@ -91,11 +92,11 @@ def register():
 
         session['user_id'] = user.id
         flash('Thanks for registering, {}'.format(user.user_name))
+        print('New user {} has been registered'.format(user.user_name))
         return redirect(url_for('index'))
     return render_template("register.html",
                            title='Sign up',
                            form=form)
-
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -109,4 +110,5 @@ def logout():
     user = g.user
     flash('Goodbye, {}'.format(user.user_name))
     session.pop('user_id', None)
+    print('User {} has been logged out. Goodbye!'.format(user.user_name))
     return redirect(url_for('index'))
