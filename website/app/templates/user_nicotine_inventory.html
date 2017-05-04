@@ -3,16 +3,16 @@
     <h3>Here is the list of {{user.user_name}} nicotine inventory</h3>
     {% if nicotine_inventory_list %}
         <ul>
-            {% for user_nicotine in nicotine_inventory_list %}
+            {% for users_nicotine in nicotine_inventory_list %}
             <li>
-                <p>{{ user_nicotine.nicotine.producer_name }}
-                    concentration {{ user_nicotine.nicotine.concentration }} mg/ml
-                {{user_nicotine.amount}}ml</p>
+                <p>{{ users_nicotine.nicotine.producer_name }}
+                    concentration {{ users_nicotine.nicotine.concentration }} mg/ml
+                {{users_nicotine.amount}}ml</p>
             </li>
             {% endfor %}
         </ul>
     {% else %}
-            <p>No Nicotine in iventory are available.</p>
+            <p>No Nicotine in inventory are available.</p>
     {% endif %}
 
 {% endblock %}

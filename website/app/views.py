@@ -167,3 +167,17 @@ def users_nicotine_inventory(user_name):
         nicotine_inventory_list=users_nicotine_inv
     )
 
+
+@app.route('/<user_name>_flavorings_inventory')
+def users_flavorings_inventory(user_name):
+    if g.user is None:
+        return redirect(url_for('index'))
+    site_name = 'eLiquidInventory'
+    users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
+    print(users_flavorings_inv)
+    return render_template(
+        "user_flavorings_inventory.html",
+        title=site_name,
+        user=g.user,
+        flavorings_inventory_list=users_flavorings_inv
+    )
