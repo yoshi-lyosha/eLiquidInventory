@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<h3>Here is the composition</h3>
+{% if composition %}
+    <ul>
+        {% for element in composition %}
+        <li>
+            <p>{{ element[0].flavoring_name , element[0].producer_name, element[1] }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>wtf?</p>
+    {% endif %}
+
+{% endblock %}

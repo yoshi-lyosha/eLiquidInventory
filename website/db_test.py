@@ -1,16 +1,17 @@
 from website.app import db, models
-from website.app.users import constants as USER
+# from website.app.users import constants as USER
 from website.app.eliquids import constants as ELIQUID
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def user_gen():
     print('-----------------')
     print('Adding first user in database')
-    u = models.User(user_name='ALEXEY', email='ALEXEY@ALEXEY.ALEXEY', password='PESOS')
+    u = models.User(user_name='ALEXEY', email='ALEXEY@ALEXEY.ALEXEY', password=generate_password_hash('Qwer1234'))
     db.session.add(u)
     db.session.commit()
     print('Adding second user in database')
-    u = models.User(user_name='FEDOS', email='FEDOS@FEDOS.FEDOS', password='PESOS')
+    u = models.User(user_name='FEDOS', email='FEDOS@FEDOS.FEDOS', password=generate_password_hash('PESOS'))
     db.session.add(u)
     db.session.commit()
 
@@ -241,7 +242,34 @@ def print_all_public_eliquids_with_composition():
         print(e)
 
 
-def run_auto_db_test_stage_1():
+def add_eliquid_to_user_favorite(user, eliquid):
+    try:
+        print('-----------------')
+        print('Adding eLiquid "{}" to user {} favorites'.format(eliquid.eliquid_name, user.user_name))
+        usr_fav = models.UsersFavouriteELiquids(user=user, e_liquid=eliquid)
+        print('eLiquid "{}" added to user {} favorites'.format(eliquid.eliquid_name, user.user_name))
+        db.session.add(usr_fav)
+        db.session.commit()
+    except Exception as e:
+        print('Can\'t add eLiquid to favorites')
+        print(e)
+        db.session.rollback()
+        print('rollback')
+
+
+def print_users_favorits_eliquids(user):
+    try:
+        print('-----------------')
+        print('User\'s {} favorite eliquids:'.format(user.user_name))
+
+    except Exception as e:
+        print('Can\'t add eLiquid to favorites')
+        print(e)
+        db.session.rollback()
+        print('rollback')
+
+
+def run_autotest_db_stage_1():
     """
     Тестирование функций добавления и вывода списков
     сущностей Юзер, Ароматизатор, Никотин
@@ -263,7 +291,7 @@ def run_auto_db_test_stage_1():
         print('Test passed')
 
 
-def run_auto_db_test_stage_2():
+def run_autotest_db_stage_2():
     """
     Тестирование функций добавления в инвентарь
     Ароматизаторов и Никотина
@@ -303,7 +331,7 @@ def run_auto_db_test_stage_2():
         print('Test passed')
 
 
-def run_auto_db_test_stage_3():
+def run_autotest_db_stage_3():
     """
     Тестирование функций добавления новых
     публичных и приватных жижек
@@ -335,6 +363,6 @@ def run_auto_db_test_stage_3():
         print('Test passed')
 
 
-run_auto_db_test_stage_1()
-run_auto_db_test_stage_2()
-run_auto_db_test_stage_3()
+run_autotest_db_stage_1()
+run_autotest_db_stage_2()
+run_autotest_db_stage_3()
