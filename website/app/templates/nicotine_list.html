@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Here is the list of Nicotine</h3>
+    {% if nicotine_list %}
+        <ul>
+            {% for nicotine in nicotine_list %}
+            <li>
+                <p>{{ nicotine.producer_name }} concentration {{ nicotine.concentration }} mg/ml</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>No eLiquids are available.</p>
+        {% endif %}
+
+{% endblock %}
