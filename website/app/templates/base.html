@@ -15,6 +15,7 @@
     {% if user %}
         <div>Welcome, {{user.user_name}}:
             <a href="{{ url_for('users_nicotine_inventory', user_name=user.user_name)}}">Your nicotine inventory</a>
+            <a href="{{ url_for('users_flavorings_inventory', user_name=user.user_name)}}">Your flavorings inventory</a>
     {% endif %}
 
 

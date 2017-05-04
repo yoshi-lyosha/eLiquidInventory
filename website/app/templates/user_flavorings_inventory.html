@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Here is the list of {{user.user_name}} flavorings inventory</h3>
+    {% if flavorings_inventory_list %}
+        <ul>
+            {% for users_flavoring in flavorings_inventory_list %}
+            <li>
+                <p>{{ users_flavoring.flavoring.flavoring_name }}
+                    by {{ users_flavoring.flavoring.producer_name }}
+                {{users_flavoring.amount}}ml</p>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+            <p>No Flavorings in inventory are available.</p>
+    {% endif %}
+
+{% endblock %}
