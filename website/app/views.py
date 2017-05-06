@@ -4,6 +4,7 @@ from website.app import models
 from website.app.forms import LoginForm, RegisterForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
+import re
 
 
 @app.before_request
@@ -56,6 +57,7 @@ def login():
     :return: 
     """
     if g.user is not None:
+        flash('You are already logged in, {}'.format(g.user.user_name))
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
@@ -65,6 +67,8 @@ def login():
             flash('Welcome, {}'.format(user.user_name))
             print('User {} has been logged in'.format(user.user_name))
             return redirect(url_for('index'))
+        else:
+            flash('Email or Password are incorrect')
     return render_template('login.html',
                            title='Sign In',
                            form=form)
@@ -84,13 +88,21 @@ def register():
             user_name=form.user_name.data,
             email=form.email.data,
             password=generate_password_hash(form.password.data))
-        db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.add(user)
+            db.session.commit()
 
-        session['user_id'] = user.id
-        flash('Thanks for registering, {}'.format(user.user_name))
-        print('New user {} has been registered'.format(user.user_name))
-        return redirect(url_for('index'))
+            session['user_id'] = user.id
+            flash('Thanks for registering, {}'.format(user.user_name))
+            print('New user {} has been registered'.format(user.user_name))
+            return redirect(url_for('index'))
+        except Exception as e:
+            same_email = re.compile('UNIQUE constraint failed: user.email')
+            same_username = re.compile('UNIQUE constraint failed: user.user_name')
+            if re.search(same_email, str(e)):
+                flash('This email is already exist')
+            elif re.search(same_username, str(e)):
+                flash('This username is already exist')
     return render_template("register.html",
                            title='Sign up',
                            form=form)
