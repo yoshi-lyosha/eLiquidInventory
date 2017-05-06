@@ -4,7 +4,6 @@ from website.app import models
 from website.app.forms import LoginForm, RegisterForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
-import re
 
 
 @app.before_request
@@ -47,7 +46,6 @@ def eliquid_comp(eliquid_id):
         title=site_name,
         composition=composition_list
     )
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -97,11 +95,9 @@ def register():
             print('New user {} has been registered'.format(user.user_name))
             return redirect(url_for('index'))
         except Exception as e:
-            same_email = re.compile('UNIQUE constraint failed: user.email')
-            same_username = re.compile('UNIQUE constraint failed: user.user_name')
-            if re.search(same_email, str(e)):
+            if 'UNIQUE constraint failed: user.email' in str(e):
                 flash('This email is already exist')
-            elif re.search(same_username, str(e)):
+            elif 'UNIQUE constraint failed: user.user_name' in str(e):
                 flash('This username is already exist')
     return render_template("register.html",
                            title='Sign up',
@@ -115,6 +111,7 @@ def logout():
     :return: 
     """
     if g.user is None:
+        flash('For being logged out, you need to be logged in!')
         return redirect(url_for('index'))
     user = g.user
     flash('Goodbye, {}'.format(user.user_name))

@@ -5,7 +5,7 @@
     <title>{{title}}</title>
 </head>
 <body>
-    <div>{{title}}: <a href="/index">Home</a>,
+    <div>eLiquidInventory: <a href="/index">Home</a>,
         <a href="/register">Register</a>
         <a href="/login">Log in</a>,
         <a href="/logout">Log out</a>
@@ -17,10 +17,7 @@
             <a href="{{ url_for('users_nicotine_inventory', user_name=user.user_name)}}">Your nicotine inventory</a>
             <a href="{{ url_for('users_flavorings_inventory', user_name=user.user_name)}}">Your flavorings inventory</a>
     {% endif %}
-
-
     </div>
-
     <hr>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -29,6 +26,7 @@
         <li>{{ message }} </li>
     {% endfor %}
     </ul>
+    <hr>
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
