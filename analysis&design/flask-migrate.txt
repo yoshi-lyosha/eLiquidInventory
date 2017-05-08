@@ -1,0 +1,9 @@
+Активируем virtualenv
+Переходим в /eLiquidInventory
+вводим команду export FLASK_APP=app (на винде вместо export пишем set)
+затем используем команды:
+flask db init - инициализация мигрейшенов и ваще бд
+flask db migrate - миграция
+flask db upgrade - применение изменений
+остальные команды можно посмотреть командой flask db --help
+
