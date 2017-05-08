@@ -162,9 +162,10 @@ def nicotine_list_page():
     )
 
 
-@app.route('/<user_name>_nickotine_inventory')
+@app.route('/Users/<user_name>/nickotine_inventory')
 def users_nicotine_inventory(user_name):
     if g.user is None:
+        flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
     users_nicotine_inv = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id).all()
@@ -177,9 +178,10 @@ def users_nicotine_inventory(user_name):
     )
 
 
-@app.route('/<user_name>_flavorings_inventory')
+@app.route('/Users/<user_name>/flavorings_inventory')
 def users_flavorings_inventory(user_name):
     if g.user is None:
+        flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
     users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
