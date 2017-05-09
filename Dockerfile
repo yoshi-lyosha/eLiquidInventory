@@ -25,7 +25,7 @@ RUN pip3 install --requirement /tmp/requirements.txt
 # Custom Supervisord config
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 22 80 5000
+EXPOSE 80
 
 COPY ./website /website
 

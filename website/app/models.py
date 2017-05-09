@@ -62,7 +62,7 @@ class UsersFlavoringInventory(db.Model):
     amount = db.Column(db.SmallInteger)
 
     def __repr__(self):
-        return '<User id %r, flavor id %r, amount %r>' % (self.user_id, self.flavor_id, self.amount)
+        return '<User id %r, flavor id %r, amount %r>' % (self.user_id, self.flavoring_id, self.amount)
 
 
 class UsersNicotineInventory(db.Model):
