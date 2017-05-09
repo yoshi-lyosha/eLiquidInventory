@@ -1,5 +1,6 @@
 Активируем virtualenv
 Переходим в /eLiquidInventory
+export PYTHONPATH=/eLiquidInventory
 вводим команду export FLASK_APP=app (на винде вместо export пишем set)
 затем используем команды:
 flask db init - инициализация мигрейшенов и ваще бд
