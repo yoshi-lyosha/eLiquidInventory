@@ -1,6 +1,6 @@
-from website.app import db, models
+from app import db, models
 # from website.app.users import constants as USER
-from website.app.eliquids import constants as ELIQUID
+from app.eliquids import constants as ELIQUID
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
