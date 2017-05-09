@@ -1,0 +1,2 @@
+docker run -it -v $(pwd)/app.db:/app.db image_name
+
