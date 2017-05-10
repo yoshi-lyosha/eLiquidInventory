@@ -35,6 +35,10 @@ def index():
 
 @app.route('/eliquids/<eliquid_id>')
 def eliquid_comp(eliquid_id):
+    if g.user is None:
+        user = {'user_name': 'Guest'}
+    else:
+        user = g.user
     site_name = 'eLiquidInventory'
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
     # composition = []
@@ -44,7 +48,8 @@ def eliquid_comp(eliquid_id):
     return render_template(
         "eliquid_comp.html",
         title=site_name,
-        composition=composition_list
+        composition=composition_list,
+        user=user
     )
 
 
@@ -191,4 +196,36 @@ def users_flavorings_inventory(user_name):
         title=site_name,
         user=g.user,
         flavorings_inventory_list=users_flavorings_inv
+    )
+
+
+@app.route('/Users/<user_name>/eliquids_inventory')
+def users_eliquids_inventory(user_name):
+    if g.user is None:
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    site_name = 'eLiquidInventory'
+    users_eliquids_inv = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id).all()
+    print(users_eliquids_inv)
+    return render_template(
+        "user_eliquids_inventory.html",
+        title=site_name,
+        user=g.user,
+        eliquids_inventory_list=users_eliquids_inv
+    )
+
+
+@app.route('/Users/<user_name>/private_eliquids')
+def users_private_eliquids_inventory(user_name):
+    if g.user is None:
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    site_name = 'eLiquidInventory'
+    users_private_eliquids = models.ELiquid.query.filter_by(user_id=g.user.id, status=ELIQUID.PRIVATE).all()
+    print(users_private_eliquids)
+    return render_template(
+        "user_private_eliquids.html",
+        title=site_name,
+        user=g.user,
+        private_eliquids_list=users_private_eliquids
     )
