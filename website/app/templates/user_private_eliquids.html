@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Here is the list of {{user.user_name}} eliquids inventory</h3>
+    {% if private_eliquids_list %}
+      <ul>
+            {% for eLiquid in private_eliquids_list %}
+            <li>
+                <a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
+                    {{ eLiquid.eliquid_name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+            <p>No eliquids in inventory are available.</p>
+    {% endif %}
+
+{% endblock %}
