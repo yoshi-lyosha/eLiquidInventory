@@ -14,31 +14,26 @@ def before_request():
     g.user = None
     if 'user_id' in session:
         g.user = models.User.query.get(session['user_id'])
+    else:
+        g.user = models.User(user_name='Guest')
+
 
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    if g.user is None:
-        user = {'user_name': 'Guest'}
-    else:
-        user = g.user
     site_name = 'eLiquidInventory'
     eliquid_list = models.ELiquid.query.filter_by(status=ELIQUID.PUBLIC)
     return render_template(
         "index.html",
         title=site_name,
-        user=user,
+        user=g.user,
         eliquid_list=eliquid_list
     )
 
 
 @app.route('/eliquids/<eliquid_id>')
 def eliquid_comp(eliquid_id):
-    if g.user is None:
-        user = {'user_name': 'Guest'}
-    else:
-        user = g.user
     site_name = 'eLiquidInventory'
     eliquid = models.ELiquid.query.filter_by(id=eliquid_id).first()
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
@@ -51,7 +46,7 @@ def eliquid_comp(eliquid_id):
         eliquid=eliquid,
         title=site_name,
         composition=composition_list,
-        user=user
+        user=g.user
     )
 
 
@@ -61,7 +56,7 @@ def login():
     Login form
     :return: 
     """
-    if g.user is not None:
+    if g.user.user_name is not 'Guest':
         flash('You are already logged in, {}'.format(g.user.user_name))
         return redirect(url_for('index'))
     form = LoginForm()
@@ -85,7 +80,8 @@ def register():
     Sign up form
     :return: 
     """
-    if g.user is not None:
+    if g.user.user_name is not 'Guest':
+        flash('You are already registered, {}'.format(g.user.user_name))
         return redirect(url_for('index'))
     form = RegisterForm()
     if form.validate_on_submit():
@@ -117,7 +113,7 @@ def logout():
     Loging out form
     :return: 
     """
-    if g.user is None:
+    if g.user.user_name is 'Guest':
         flash('For being logged out, you need to be logged in!')
         return redirect(url_for('index'))
     user = g.user
@@ -133,17 +129,13 @@ def flavorings_list_page():
     List of all flavorings
     :return: 
     """
-    if g.user is None:
-        user = {'user_name': 'Guest'}
-    else:
-        user = g.user
     site_name = 'eLiquidInventory'
     flavorings_list = models.Flavoring.query.all()
 
     return render_template(
         "flavorings_list.html",
         title=site_name,
-        user=user,
+        user=g.user,
         flavorings_list=flavorings_list
     )
 
@@ -154,24 +146,20 @@ def nicotine_list_page():
     List of all nicotine
     :return: 
     """
-    if g.user is None:
-        user = {'user_name': 'Guest'}
-    else:
-        user = g.user
     site_name = 'eLiquidInventory'
     nicotine_list = models.Nicotine.query.all()
 
     return render_template(
         "nicotine_list.html",
         title=site_name,
-        user=user,
+        user=g.user,
         nicotine_list=nicotine_list
     )
 
 
 @app.route('/Users/<user_name>/nickotine_inventory')
 def users_nicotine_inventory(user_name):
-    if g.user is None:
+    if g.user.user_name is 'Guest':
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
@@ -186,7 +174,7 @@ def users_nicotine_inventory(user_name):
 
 @app.route('/Users/<user_name>/flavorings_inventory')
 def users_flavorings_inventory(user_name):
-    if g.user is None:
+    if g.user.user_name is 'Guest':
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
@@ -201,7 +189,7 @@ def users_flavorings_inventory(user_name):
 
 @app.route('/Users/<user_name>/eliquids_inventory')
 def users_favourite_eliquids(user_name):
-    if g.user is None:
+    if g.user.user_name is 'Guest':
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
@@ -216,7 +204,7 @@ def users_favourite_eliquids(user_name):
 
 @app.route('/Users/<user_name>/private_eliquids')
 def users_private_eliquids(user_name):
-    if g.user is None:
+    if g.user.user_name is 'Guest':
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
