@@ -15,9 +15,15 @@
         <a href="/nicotine_list">Nicotine list</a>
     </div>
     {% if user %}
-        <div>Welcome, {{user.user_name}}:
+        {% if user.id %}
+            <div>Welcome, {{user.user_name}}:
             <a href="{{ url_for('users_nicotine_inventory', user_name=user.user_name)}}">Your nicotine inventory</a>
             <a href="{{ url_for('users_flavorings_inventory', user_name=user.user_name)}}">Your flavorings inventory</a>
+            <a href="{{ url_for('users_eliquids_inventory', user_name=user.user_name)}}">Your eLiquids inventory</a>
+            <a href="{{ url_for('users_private_eliquids_inventory', user_name=user.user_name)}}">Your private eLiquids inventory</a>
+            {% else %}
+            <div>Welcome, {{user.user_name}}!</div>
+        {% endif %}
     {% endif %}
     </div>
     <hr>
