@@ -57,8 +57,5 @@ website/app.db
 website/app.egg-info/
 website/app/__pycache__/
 website/app/eliquids/__pycache__/
-website/app/templates/create_new.html
-website/app/templates/user_eliquids_inventory.html
-website/app/templates/user_private_eliquids.html
 website/app/users/__pycache__/
 
