@@ -13,9 +13,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db, directory=migration_dir)
 lm = LoginManager(app)
 
-print(basedir)
-print(migration_dir)
-
 # lm = LoginManager()
 # lm.init_app(app)
 # lm.login_view = 'login'

@@ -40,6 +40,7 @@ def eliquid_comp(eliquid_id):
     else:
         user = g.user
     site_name = 'eLiquidInventory'
+    eliquid = models.ELiquid.query.filter_by(id=eliquid_id).first()
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
     # composition = []
     # for comp_field in composition_list:
@@ -47,6 +48,7 @@ def eliquid_comp(eliquid_id):
     #                             comp_field.quantity])
     return render_template(
         "eliquid_comp.html",
+        eliquid=eliquid,
         title=site_name,
         composition=composition_list,
         user=user
@@ -174,7 +176,6 @@ def users_nicotine_inventory(user_name):
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
     users_nicotine_inv = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id).all()
-    print(users_nicotine_inv)
     return render_template(
         "user_nicotine_inventory.html",
         title=site_name,
@@ -190,7 +191,6 @@ def users_flavorings_inventory(user_name):
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
     users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
-    print(users_flavorings_inv)
     return render_template(
         "user_flavorings_inventory.html",
         title=site_name,
@@ -200,15 +200,14 @@ def users_flavorings_inventory(user_name):
 
 
 @app.route('/Users/<user_name>/eliquids_inventory')
-def users_eliquids_inventory(user_name):
+def users_favourite_eliquids(user_name):
     if g.user is None:
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
     users_eliquids_inv = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id).all()
-    print(users_eliquids_inv)
     return render_template(
-        "user_eliquids_inventory.html",
+        "user_favourite_eliquids.html",
         title=site_name,
         user=g.user,
         eliquids_inventory_list=users_eliquids_inv
@@ -216,16 +215,15 @@ def users_eliquids_inventory(user_name):
 
 
 @app.route('/Users/<user_name>/private_eliquids')
-def users_private_eliquids_inventory(user_name):
+def users_private_eliquids(user_name):
     if g.user is None:
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
-    users_private_eliquids = models.ELiquid.query.filter_by(user_id=g.user.id, status=ELIQUID.PRIVATE).all()
-    print(users_private_eliquids)
+    users_private_eliquids_list = models.ELiquid.query.filter_by(user_id=g.user.id, status=ELIQUID.PRIVATE).all()
     return render_template(
         "user_private_eliquids.html",
         title=site_name,
         user=g.user,
-        private_eliquids_list=users_private_eliquids
+        private_eliquids_list=users_private_eliquids_list
     )

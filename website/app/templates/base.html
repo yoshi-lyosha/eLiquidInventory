@@ -19,8 +19,8 @@
             <div>Welcome, {{user.user_name}}:
             <a href="{{ url_for('users_nicotine_inventory', user_name=user.user_name)}}">Your nicotine inventory</a>
             <a href="{{ url_for('users_flavorings_inventory', user_name=user.user_name)}}">Your flavorings inventory</a>
-            <a href="{{ url_for('users_eliquids_inventory', user_name=user.user_name)}}">Your eLiquids inventory</a>
-            <a href="{{ url_for('users_private_eliquids_inventory', user_name=user.user_name)}}">Your private eLiquids inventory</a>
+            <a href="{{ url_for('users_favourite_eliquids', user_name=user.user_name)}}">Your favourites eLiquids</a>
+            <a href="{{ url_for('users_private_eliquids', user_name=user.user_name)}}">Your private eLiquids</a>
             {% else %}
             <div>Welcome, {{user.user_name}}!</div>
         {% endif %}
