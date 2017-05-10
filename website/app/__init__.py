@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config.from_object('website.config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, directory='website/host_mount/migrations')
+lm = LoginManager(app)
 
 # lm = LoginManager()
 # lm.init_app(app)
