@@ -61,7 +61,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = models.User.query.filter_by(email=form.email.data).first()
+        user = models.User.query.filter_by(email=form.email.data.lower()).first()
         if user and check_password_hash(user.password, form.password.data):
             session['user_id'] = user.id
             flash('Welcome, {}'.format(user.user_name))
@@ -86,8 +86,8 @@ def register():
     form = RegisterForm()
     if form.validate_on_submit():
         user = models.User(
-            user_name=form.user_name.data,
-            email=form.email.data,
+            user_name=form.user_name.data.lower(),
+            email=form.email.data.lower(),
             password=generate_password_hash(form.password.data))
         try:
             db.session.add(user)
