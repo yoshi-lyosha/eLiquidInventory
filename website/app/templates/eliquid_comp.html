@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-
-
 <h3>Here is the composition</h3>
 {% if composition %}
     <ul>
         {% for element in composition %}
         <li>
-            <p>{{ element[0].flavoring_name , element[0].producer_name, element[1] }}</p>
+            <!--<p>{{ element.flavoring_id.flavoring_name }} by {{ element.flavoring_id.producer_name }}-->
+            <p>{{ element.flavoring.flavoring_name }} by {{ element.flavoring.producer_name }}
+                {{ element.quantity }}%</p>
         </li>
         {% endfor %}
     </ul>

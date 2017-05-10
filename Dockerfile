@@ -25,8 +25,10 @@ RUN pip3 install --requirement /tmp/requirements.txt
 # Custom Supervisord config
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 22 80 5000
+EXPOSE 80
 
 COPY ./website /website
+
+VOLUME /home/pi/Git/eLiquidInventory/website/host_mount:/website/host_mount
 
 CMD ["/usr/bin/supervisord"]

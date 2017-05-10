@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Hello, {{user.user_name}}!</h1>
-
     <h3>Here is the list of eLiquids</h3>
     {% if eliquid_list %}
         <ul>
             {% for eLiquid in eliquid_list %}
             <li>
-                <p>{{ eLiquid.eliquid_name }}</p>
+                <a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
+                    {{ eLiquid.eliquid_name }}</a>
             </li>
             {% endfor %}
         </ul>
         {% else %}
             <p>No eLiquids are available.</p>
         {% endif %}
-
 {% endblock %}

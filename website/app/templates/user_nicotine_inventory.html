@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Here is the list of {{user.user_name}} nicotine inventory</h3>
+    {% if nicotine_inventory_list %}
+        <ul>
+            {% for users_nicotine in nicotine_inventory_list %}
+            <li>
+                <p>{{ users_nicotine.nicotine.producer_name }}
+                    concentration {{ users_nicotine.nicotine.concentration }} mg/ml
+                {{users_nicotine.amount}}ml</p>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+            <p>No Nicotine in inventory are available.</p>
+    {% endif %}
+
+{% endblock %}
