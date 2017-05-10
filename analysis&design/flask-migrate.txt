@@ -8,3 +8,21 @@ flask db migrate - миграция
 flask db upgrade - применение изменений
 остальные команды можно посмотреть командой flask db --help
 
+Использование в контейнере:
+docker exec -it <cont_name> /bin/bash
+export PYTHONPATH=/
+export FLASK_APP=website.app
+flask db init
+flask db migrate
+flask db upgrade
+
+export PYTHONPATH=/ && export FLASK_APP=website.app && \
+flask db init && flask db migrate && flask db upgrade && \
+python3 website/db_test.py
+
+Использование на винде:
+set PYTHONPATH=D:\Облако\Git\eLiquidInventory\
+export FLASK_APP=website.app
+flask db init
+flask db migrate
+flask db upgrade
