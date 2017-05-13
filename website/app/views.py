@@ -194,6 +194,8 @@ def users_favourite_eliquids(user_name):
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
     users_eliquids_inv = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id).all()
+    for element in users_eliquids_inv:
+        print(element.eliquid_id)
     return render_template(
         "user_favourite_eliquids.html",
         title=site_name,

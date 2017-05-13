@@ -3,10 +3,10 @@
     <h3>Here is the list of {{user.user_name}} favourite eliquids</h3>
     {% if eliquids_inventory_list %}
       <ul>
-            {% for eLiquid in eliquids_inventory_list %}
+            {% for element in eliquids_inventory_list %}
             <li>
-                <a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
-                    {{ eLiquid.eliquid_name }}</a>
+                <a href="{{ url_for('eliquid_comp', eliquid_id=element.eliquid_id)}}">
+                    {{ element.e_liquid.eliquid_name }}</a>
             </li>
             {% endfor %}
         </ul>
