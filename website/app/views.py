@@ -32,21 +32,32 @@ def index():
     )
 
 
-@app.route('/eliquids/<eliquid_id>')
+@app.route('/eliquids/<eliquid_id>', methods=['POST', 'GET'])
 def eliquid_comp(eliquid_id):
     site_name = 'eLiquidInventory'
     eliquid = models.ELiquid.query.filter_by(id=eliquid_id).first()
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
-    # composition = []
-    # for comp_field in composition_list:
-    #         composition.append([models.Flavoring.query.filter_by(id=comp_field.flavoring_id).first(),
-    #                             comp_field.quantity])
+    # проверяем, есть ли эта жижка в фэйворитс
+    favourite = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id, eliquid_id=eliquid_id).first()
+    if request.method == 'POST':
+        if request.form['submit'] == 'Like it':
+            new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
+            db.session.add(new_favourite)
+            db.session.commit()
+            # обновляем значение favourite для темплейта
+            favourite = new_favourite
+        if request.form['submit'] == 'Unlike it':
+            db.session.delete(favourite)
+            db.session.commit()
+            # обновляем значение favourite для темплейта
+            favourite = None
     return render_template(
         "eliquid_comp.html",
         eliquid=eliquid,
         title=site_name,
         composition=composition_list,
-        user=g.user
+        user=g.user,
+        favourite=favourite
     )
 
 
@@ -194,8 +205,6 @@ def users_favourite_eliquids(user_name):
         return redirect(url_for('index'))
     site_name = 'eLiquidInventory'
     users_eliquids_inv = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id).all()
-    for element in users_eliquids_inv:
-        print(element.eliquid_id)
     return render_template(
         "user_favourite_eliquids.html",
         title=site_name,

@@ -1,16 +1,25 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h3>{{ eliquid.eliquid_name }}</h3>
-{% if composition %}
-    <ul>
-        {% for element in composition %}
-        <li>
-            <!--<p>{{ element.flavoring_id.flavoring_name }} by {{ element.flavoring_id.producer_name }}-->
-            <p>{{ element.flavoring.flavoring_name }} by {{ element.flavoring.producer_name }}
-                {{ element.quantity }}%</p>
-        </li>
-        {% endfor %}
-    </ul>
+    <form method="POST">
+        {% if not favourite %}
+            <input type="submit" name="submit" value="Like it">
+        {% else %}
+            <input type="submit" name="submit" value="Unlike it">
+        {% endif %}
+    </form>
+
+
+    <h3>{{ eliquid.eliquid_name }}</h3>
+    {% if composition %}
+        <ul>
+            {% for element in composition %}
+            <li>
+                <p>{{ element.flavoring.flavoring_name }} by {{ element.flavoring.producer_name }}
+                    {{ element.quantity }}%</p>
+            </li>
+            {% endfor %}
+        </ul>
     {% else %}
         <p>wtf?</p>
     {% endif %}
