@@ -40,17 +40,20 @@ def eliquid_comp(eliquid_id):
     # проверяем, есть ли эта жижка в фэйворитс
     favourite = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id, eliquid_id=eliquid_id).first()
     if request.method == 'POST':
-        if request.form['submit'] == 'Like it':
-            new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
-            db.session.add(new_favourite)
-            db.session.commit()
-            # обновляем значение favourite для темплейта
-            favourite = new_favourite
-        if request.form['submit'] == 'Unlike it':
-            db.session.delete(favourite)
-            db.session.commit()
-            # обновляем значение favourite для темплейта
-            favourite = None
+        if g.user.user_name is 'Guest':
+            flash('For doing this action, you need to be logged in!')
+        else:
+            if request.form['submit'] == 'Like it':
+                new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
+                db.session.add(new_favourite)
+                db.session.commit()
+                # обновляем значение favourite для темплейта
+                favourite = new_favourite
+            if request.form['submit'] == 'Unlike it':
+                db.session.delete(favourite)
+                db.session.commit()
+                # обновляем значение favourite для темплейта
+                favourite = None
     return render_template(
         "eliquid_comp.html",
         eliquid=eliquid,
