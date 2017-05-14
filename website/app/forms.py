@@ -1,12 +1,8 @@
 from flask_wtf import FlaskForm, RecaptchaField
-<<<<<<< HEAD
+
 
 
 from wtforms import BooleanField, StringField, PasswordField, FloatField
-
-=======
-from wtforms import BooleanField, StringField, PasswordField, FloatField
->>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
 from wtforms.validators import DataRequired, Email, EqualTo, Regexp
 
 
@@ -31,6 +27,7 @@ class RegisterForm(FlaskForm):
 <<<<<<< HEAD
 class AddFlavoringForm(FlaskForm):
 <<<<<<< HEAD
+<<<<<<< HEAD
     name = SelectField('Flavoring name', [DataRequired()])
     producer_name = StringField('Flavoring producer', [DataRequired()])
     amount = IntegerField('Amount', [DataRequired()])
@@ -40,6 +37,11 @@ class AddFlavoringToInvForm(FlaskForm):
     producer_name = StringField('Producer', [DataRequired()])
     amount = FloatField('Amount', [DataRequired()])
 >>>>>>> upstream/Alexey
+=======
+    flavoring_name = StringField('Flavoring', [DataRequired()])
+    producer_name = StringField('Producer', [DataRequired()])
+    amount = FloatField('Amount', [DataRequired()])
+>>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
 =======
     flavoring_name = StringField('Flavoring', [DataRequired()])
     producer_name = StringField('Producer', [DataRequired()])

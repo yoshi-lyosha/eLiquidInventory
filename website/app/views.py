@@ -1,13 +1,8 @@
 from flask import render_template, flash, redirect, g, url_for, session, request
 from website.app import app, db
 from website.app import models
-<<<<<<< HEAD
 
 from website.app.forms import *
-
-=======
-from website.app.forms import *
->>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
 
@@ -206,7 +201,11 @@ def users_flavorings_inventory(user_name):
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
 
+<<<<<<< HEAD
     form = AddFlavoringToInvForm()
+=======
+    form = AddFlavoringForm()
+>>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
     if form.validate_on_submit():
         flavoring = models.Flavoring.query.filter_by(flavoring_name=form.flavoring_name.data,
                                                      producer_name=form.producer_name.data).first()
@@ -217,6 +216,10 @@ def users_flavorings_inventory(user_name):
             db.session.commit()
         else:
             flash("This flavoring doesn't exists in database")
+<<<<<<< HEAD
+=======
+
+>>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
     site_name = 'eLiquidInventory'
     users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
     return render_template(
