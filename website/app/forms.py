@@ -24,26 +24,10 @@ class RegisterForm(FlaskForm):
     # re_captcha = RecaptchaField()
 
 
-<<<<<<< HEAD
-class AddFlavoringForm(FlaskForm):
-<<<<<<< HEAD
-<<<<<<< HEAD
-    name = SelectField('Flavoring name', [DataRequired()])
-    producer_name = StringField('Flavoring producer', [DataRequired()])
-    amount = IntegerField('Amount', [DataRequired()])
-=======
+
+
 class AddFlavoringToInvForm(FlaskForm):
     flavoring_name = StringField('Flavoring', [DataRequired()])
     producer_name = StringField('Producer', [DataRequired()])
     amount = FloatField('Amount', [DataRequired()])
->>>>>>> upstream/Alexey
-=======
-    flavoring_name = StringField('Flavoring', [DataRequired()])
-    producer_name = StringField('Producer', [DataRequired()])
-    amount = FloatField('Amount', [DataRequired()])
->>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
-=======
-    flavoring_name = StringField('Flavoring', [DataRequired()])
-    producer_name = StringField('Producer', [DataRequired()])
-    amount = FloatField('Amount', [DataRequired()])
->>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
+
