@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, g, url_for, session, request
 from website.app import app, db
 from website.app import models
-from website.app.forms import LoginForm, RegisterForm
+from website.app.forms import LoginForm, RegisterForm, AddFlavoringForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
 
@@ -129,15 +129,24 @@ def flavorings_list_page():
     List of all flavorings
     :return: 
     """
+    form = AddFlavoringForm()
     site_name = 'eLiquidInventory'
     flavorings_list = models.Flavoring.query.all()
 
-    return render_template(
-        "flavorings_list.html",
-        title=site_name,
-        user=g.user,
-        flavorings_list=flavorings_list
-    )
+    if request.method == 'POST':
+        if not form.validate():
+            flash('All fields are required.')
+            return render_template('flavorings_list.html', form=form)
+        else:
+            return render_template('success.html')
+    elif request.method == 'GET':
+        return render_template(
+            "flavorings_list.html",
+            title=site_name,
+            user=g.user,
+            flavorings_list=flavorings_list,
+            form=form
+        )
 
 
 @app.route('/nicotine_list')

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 
-from wtforms import BooleanField, StringField, PasswordField
+from wtforms import BooleanField, StringField, PasswordField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Regexp
 
 
@@ -20,3 +20,9 @@ class RegisterForm(FlaskForm):
       ])
     # accept_tos = BooleanField('I accept the TOS', [DataRequired()])
     # re_captcha = RecaptchaField()
+
+
+class AddFlavoringForm(FlaskForm):
+    name = SelectField('Flavoring name', [DataRequired()])
+    producer_name = StringField('Flavoring producer', [DataRequired()])
+    amount = IntegerField('Amount', [DataRequired()])
