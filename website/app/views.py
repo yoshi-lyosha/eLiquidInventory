@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, g, url_for, session, request
 from website.app import app, db
 from website.app import models
+
 from website.app.forms import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
@@ -16,7 +17,6 @@ def before_request():
         g.user = models.User.query.get(session['user_id'])
     else:
         g.user = models.User(user_name='Guest')
-
 
 
 @app.route('/', methods=['GET'])
@@ -143,15 +143,24 @@ def flavorings_list_page():
     List of all flavorings
     :return: 
     """
+    form = AddFlavoringForm()
     site_name = 'eLiquidInventory'
     flavorings_list = models.Flavoring.query.all()
 
-    return render_template(
-        "flavorings_list.html",
-        title=site_name,
-        user=g.user,
-        flavorings_list=flavorings_list
-    )
+    if request.method == 'POST':
+        if not form.validate():
+            flash('All fields are required.')
+            return render_template('flavorings_list.html', form=form)
+        else:
+            return render_template('success.html')
+    elif request.method == 'GET':
+        return render_template(
+            "flavorings_list.html",
+            title=site_name,
+            user=g.user,
+            flavorings_list=flavorings_list,
+            form=form
+        )
 
 
 @app.route('/nicotine_list')
@@ -192,7 +201,10 @@ def users_flavorings_inventory(user_name):
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
 
+
+
     form = AddFlavoringToInvForm()
+
     if form.validate_on_submit():
         flavoring = models.Flavoring.query.filter_by(flavoring_name=form.flavoring_name.data,
                                                      producer_name=form.producer_name.data).first()
@@ -203,6 +215,7 @@ def users_flavorings_inventory(user_name):
             db.session.commit()
         else:
             flash("This flavoring doesn't exists in database")
+
     site_name = 'eLiquidInventory'
     users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
     return render_template(
