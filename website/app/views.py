@@ -18,7 +18,6 @@ def before_request():
         g.user = models.User(user_name='Guest')
 
 
-
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
@@ -143,15 +142,24 @@ def flavorings_list_page():
     List of all flavorings
     :return: 
     """
+    form = AddFlavoringForm()
     site_name = 'eLiquidInventory'
     flavorings_list = models.Flavoring.query.all()
 
-    return render_template(
-        "flavorings_list.html",
-        title=site_name,
-        user=g.user,
-        flavorings_list=flavorings_list
-    )
+    if request.method == 'POST':
+        if not form.validate():
+            flash('All fields are required.')
+            return render_template('flavorings_list.html', form=form)
+        else:
+            return render_template('success.html')
+    elif request.method == 'GET':
+        return render_template(
+            "flavorings_list.html",
+            title=site_name,
+            user=g.user,
+            flavorings_list=flavorings_list,
+            form=form
+        )
 
 
 @app.route('/nicotine_list')
