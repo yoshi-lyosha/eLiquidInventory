@@ -36,23 +36,23 @@ def eliquid_comp(eliquid_id):
     site_name = 'eLiquidInventory'
     eliquid = models.ELiquid.query.filter_by(id=eliquid_id).first()
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
-    # проверяем, есть ли эта жижка в фэйворитс
+    # # проверяем, есть ли эта жижка в фэйворитс
     favourite = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id, eliquid_id=eliquid_id).first()
-    if request.method == 'POST':
-        if g.user.user_name is 'Guest':
-            flash('For doing this action, you need to be logged in!')
-        else:
-            if request.form['submit'] == 'Like it':
-                new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
-                db.session.add(new_favourite)
-                db.session.commit()
-                # обновляем значение favourite для темплейта
-                favourite = new_favourite
-            if request.form['submit'] == 'Unlike it':
-                db.session.delete(favourite)
-                db.session.commit()
-                # обновляем значение favourite для темплейта
-                favourite = None
+    # if request.method == 'POST':
+    #     if g.user.user_name is 'Guest':
+    #         flash('For doing this action, you need to be logged in!')
+    #     else:
+    #         if request.form['submit'] == 'Like it':
+    #             new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
+    #             db.session.add(new_favourite)
+    #             db.session.commit()
+    #             # обновляем значение favourite для темплейта
+    #             favourite = new_favourite
+    #         if request.form['submit'] == 'Unlike it':
+    #             db.session.delete(favourite)
+    #             db.session.commit()
+    #             # обновляем значение favourite для темплейта
+    #             favourite = None
     return render_template(
         "eliquid_comp.html",
         eliquid=eliquid,
@@ -61,6 +61,24 @@ def eliquid_comp(eliquid_id):
         user=g.user,
         favourite=favourite
     )
+
+
+@app.route('/data', methods=['POST'])
+def data_post():
+    eliquid_id = request.form.get('data')
+    favourite = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id, eliquid_id=eliquid_id).first()
+    if g.user.user_name is 'Guest':
+        flash('For doing this action, you need to be logged in!')
+    else:
+        if favourite:
+            db.session.delete(favourite)
+            db.session.commit()
+            return 'Unlike'
+        else:
+            new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
+            db.session.add(new_favourite)
+            db.session.commit()
+            return 'Added to favs'
 
 
 @app.route('/login', methods=['GET', 'POST'])

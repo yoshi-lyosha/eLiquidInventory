@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
 import os
 basedir = os.path.abspath(os.path.dirname(__file__) + '/../..')
@@ -12,6 +13,7 @@ app.config.from_object('website.config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, directory=migration_dir)
 lm = LoginManager(app)
+bootstrap = Bootstrap(app)
 
 # lm = LoginManager()
 # lm.init_app(app)
