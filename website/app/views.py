@@ -18,7 +18,6 @@ def before_request():
         g.user = models.User(user_name='Guest')
 
 
-
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():

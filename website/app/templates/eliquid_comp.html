@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form method="POST">
+    <form action="/eliquids/{{ eliquid.id }}" id="like_form">
         {% if not favourite %}
             <input type="submit" name="submit" value="Like it">
         {% else %}
@@ -23,5 +23,22 @@
     {% else %}
         <p>wtf?</p>
     {% endif %}
+<script>
+    $(document).ready(function () {
+        $("#like_form").submit(function (e) {
+            e.preventDefault()
+            var $form = $(this),
+                term = $form.find( "input[name='submit']" ).val(),
+                url = $form.attr( 'action' );
+{#            alert(term + " " + url);#}
+            var posting = $.post( url, {submit: term} );
 
+            posting.done(function() {
+                if ($( "input" ).val() == "Like it") {
+                    $ ( "input" ).val("Unlike it");
+                } else { $ ( "input" ).val("Like it")};
+            })
+        });
+    });
+</script>
 {% endblock %}
