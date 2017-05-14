@@ -56,7 +56,7 @@ class Flavoring(db.Model):
                                cascade='all', lazy='dynamic')
 
     def __repr__(self):
-        return '<Flavor %r Producer %r>' % (self.flavor_name, self.producer_name)
+        return '<Flavor %r Producer %r>' % (self.flavoring_name, self.producer_name)
 
 
 class UsersFlavoringInventory(db.Model):

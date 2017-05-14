@@ -21,7 +21,14 @@ class RegisterForm(FlaskForm):
     # re_captcha = RecaptchaField()
 
 
-class AddFlavoringToInvForm(FlaskForm):
+class AddFlavoringForm(FlaskForm):
     flavoring_name = StringField('Flavoring', [DataRequired()])
     producer_name = StringField('Producer', [DataRequired()])
+
+
+class AddFlavoringToInvForm(AddFlavoringForm):
     amount = FloatField('Amount', [DataRequired()])
+
+
+class AddNicotineToInvForm(FlaskForm):
+    pass
