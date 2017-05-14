@@ -1,7 +1,13 @@
 from flask import render_template, flash, redirect, g, url_for, session, request
 from website.app import app, db
 from website.app import models
-from website.app.forms import LoginForm, RegisterForm, AddFlavoringForm
+<<<<<<< HEAD
+
+from website.app.forms import *
+
+=======
+from website.app.forms import *
+>>>>>>> efe5e2e3680ce3b367415e1ebfef6a7971317f94
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
 
@@ -194,15 +200,28 @@ def users_nicotine_inventory(user_name):
     )
 
 
-@app.route('/Users/<user_name>/flavorings_inventory')
+@app.route('/Users/<user_name>/flavorings_inventory', methods=['POST', 'GET'])
 def users_flavorings_inventory(user_name):
     if g.user.user_name is 'Guest':
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
+
+    form = AddFlavoringToInvForm()
+    if form.validate_on_submit():
+        flavoring = models.Flavoring.query.filter_by(flavoring_name=form.flavoring_name.data,
+                                                     producer_name=form.producer_name.data).first()
+        if flavoring:
+            print('Adding flavoring {} in {} inventory'.format(flavoring.flavoring_name, g.user.user_name))
+            inv = models.UsersFlavoringInventory(user=g.user, flavoring=flavoring, amount=form.amount.data)
+            db.session.add(inv)
+            db.session.commit()
+        else:
+            flash("This flavoring doesn't exists in database")
     site_name = 'eLiquidInventory'
     users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
     return render_template(
         "user_flavorings_inventory.html",
+        form=form,
         title=site_name,
         user=g.user,
         flavorings_inventory_list=users_flavorings_inv
