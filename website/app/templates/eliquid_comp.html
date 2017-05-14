@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="/eliquids/{{ eliquid.id }}" id="like_form">
-        {% if not favourite %}
-            <input type="submit" name="submit" value="Like it">
-        {% else %}
-            <input type="submit" name="submit" value="Unlike it">
-        {% endif %}
-    </form>
+{#    <form action="/eliquids/{{ eliquid.id }}" id="like_form">#}
+{#        {% if not favourite %}#}
+{#            <input type="submit" name="submit" value="Like it">#}
+{#        {% else %}#}
+{#            <input type="submit" name="submit" value="Unlike it">#}
+{#        {% endif %}#}
+{#    </form>#}
+    {% if not favourite %}
+        <button id="send_data">Like</button>
+    {% else %}
+        <button id="send_data">Unlike</button>
+    {% endif %}
 
 
     <h3>{{ eliquid.eliquid_name }}</h3>
@@ -24,21 +29,41 @@
         <p>wtf?</p>
     {% endif %}
 <script>
-    $(document).ready(function () {
-        $("#like_form").submit(function (e) {
-            e.preventDefault()
-            var $form = $(this),
-                term = $form.find( "input[name='submit']" ).val(),
-                url = $form.attr( 'action' );
+       $(document).ready(function() {
+           $('#send_data').on('click', function () {
+               $.post({
+                   url: "{{ url_for('data_post') }}",
+                   data: {
+                       data: {{ eliquid.id }}
+                   },
+                   success: function () {
+                       if ($('#send_data').text() == "Like") {
+                           $('#send_data').text('Unlike');
+                       } else {
+                           $('#send_data').text('Like');
+                       }
+{#                       $('#send_data').toggle(function () {#}
+{#                           $(this).text("Like");#}
+{#                       }, function () {#}
+{#                           $(this).text("Unlike");#}
+{#                       });#}
+                   }
+               });
+           });
+       })
+{#        $("#like_form").submit(function (e) {#}
+{#            e.preventDefault()#}
+{#            var $form = $(this),#}
+{#                term = $form.find( "input[name='submit']" ).val(),#}
+{#                url = $form.attr( 'action' );#}
 {#            alert(term + " " + url);#}
-            var posting = $.post( url, {submit: term} );
-
-            posting.done(function() {
-                if ($( "input" ).val() == "Like it") {
-                    $ ( "input" ).val("Unlike it");
-                } else { $ ( "input" ).val("Like it")};
-            })
-        });
-    });
+{#            var posting = $.post( url, {submit: term} );#}
+{##}
+{#            posting.done(function() {#}
+{#                if ($( "#send_data" ).text() == "Like it") {#}
+{#                    $ ( "#send_data" ).text("Unlike it");#}
+{#                } else { $ ( "#send_data" ).text("Like it")};#}
+{#            })#}
+{#        });#}
 </script>
 {% endblock %}
