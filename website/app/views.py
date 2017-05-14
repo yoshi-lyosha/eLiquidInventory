@@ -37,7 +37,6 @@ def eliquid_comp(eliquid_id):
     eliquid = models.ELiquid.query.filter_by(id=eliquid_id).first()
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
     # # проверяем, есть ли эта жижка в фэйворитс
-    favourite = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id, eliquid_id=eliquid_id).first()
     # if request.method == 'POST':
     #     if g.user.user_name is 'Guest':
     #         flash('For doing this action, you need to be logged in!')
@@ -59,12 +58,12 @@ def eliquid_comp(eliquid_id):
         title=site_name,
         composition=composition_list,
         user=g.user,
-        favourite=favourite
+        # favourite=favourite
     )
 
 
-@app.route('/data', methods=['POST'])
-def data_post():
+@app.route('/like', methods=['POST'])
+def like_post():
     eliquid_id = request.form.get('data')
     favourite = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id, eliquid_id=eliquid_id).first()
     if g.user.user_name is 'Guest':
@@ -73,12 +72,12 @@ def data_post():
         if favourite:
             db.session.delete(favourite)
             db.session.commit()
-            return 'Unlike'
+            return ''
         else:
             new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
             db.session.add(new_favourite)
             db.session.commit()
-            return 'Added to favs'
+            return ''
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -154,29 +153,36 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/flavorings_list')
+@app.route('/flavorings_list', methods=['GET', 'POST'])
 def flavorings_list_page():
     """
     List of all flavorings
     :return: 
     """
-    # form = AddFlavoringForm()
+    form = AddFlavoringForm()
     site_name = 'eLiquidInventory'
     flavorings_list = models.Flavoring.query.all()
+    if request.method == 'POST' and form.validate_on_submit():
+        if g.user.user_name is 'Guest':
+                flash('For doing this action, you need to be logged in!')
+        else:
+            producer = request.form['producer_name']
+            name = request.form['flavoring_name']
+            flavoring = models.Flavoring.query.filter_by(flavoring_name=name, producer_name=producer).first()
+            if flavoring:
+                flash('Flavoring already exists.')
+            else:
+                new_flavoring = models.Flavoring(flavoring_name=name, producer_name=producer)
+                db.session.add(new_flavoring)
+                db.session.commit()
+                return redirect('flavorings_list')
 
-    # if request.method == 'POST':
-    #     if not form.validate():
-    #         flash('All fields are required.')
-    #         return render_template('flavorings_list.html', form=form)
-    #     else:
-    #         return render_template('success.html')
-    # elif request.method == 'GET':
     return render_template(
         "flavorings_list.html",
         title=site_name,
         user=g.user,
         flavorings_list=flavorings_list,
-        # form=form
+        form=form
     )
 
 
@@ -218,16 +224,24 @@ def users_flavorings_inventory(user_name):
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
     form = AddFlavoringToInvForm()
-    if form.validate_on_submit():
-        flavoring = models.Flavoring.query.filter_by(flavoring_name=form.flavoring_name.data,
-                                                     producer_name=form.producer_name.data).first()
+    if request.method == 'POST' and form.validate_on_submit():
+        producer = request.form['producer_name']
+        name = request.form['flavoring_name']
+        amount = request.form['amount']
+        flavoring = models.Flavoring.query.filter_by(flavoring_name=name, producer_name=producer).first()
         if flavoring:
-            print('Adding flavoring {} in {} inventory'.format(flavoring.flavoring_name, g.user.user_name))
-            inv = models.UsersFlavoringInventory(user=g.user, flavoring=flavoring, amount=form.amount.data)
-            db.session.add(inv)
-            db.session.commit()
-        else:
-            flash("This flavoring doesn't exists in database")
+            flavoring_exists = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).join(models.Flavoring).filter_by(flavoring_name=name, producer_name=producer).first()
+            if flavoring_exists and flavoring_exists.amount != 0:
+                flash('You have this already')
+            elif flavoring_exists and flavoring_exists.amount == 0:
+                flash('Updates {} by {} from {} to {}'.format(flavoring.flavoring_name, flavoring.producer_name, flavoring_exists.amount, amount))
+                flavoring_exists.amount = amount
+                db.session.commit()
+            else:
+                new_record = models.UsersFlavoringInventory(flavoring_id=flavoring.id, user_id=g.user.id, amount=amount)
+                db.session.add(new_record)
+                db.session.commit()
+
     site_name = 'eLiquidInventory'
     users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
     return render_template(

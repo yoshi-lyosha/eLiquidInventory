@@ -9,9 +9,9 @@
 {#        {% endif %}#}
 {#    </form>#}
     {% if not favourite %}
-        <button id="send_data">Like</button>
+        <button id="like">Like</button>
     {% else %}
-        <button id="send_data">Unlike</button>
+        <button id="like">Unlike</button>
     {% endif %}
 
 
@@ -30,17 +30,17 @@
     {% endif %}
 <script>
        $(document).ready(function() {
-           $('#send_data').on('click', function () {
+           $('#like').on('click', function () {
                $.post({
-                   url: "{{ url_for('data_post') }}",
+                   url: "{{ url_for('like_post') }}",
                    data: {
                        data: {{ eliquid.id }}
                    },
                    success: function () {
-                       if ($('#send_data').text() == "Like") {
-                           $('#send_data').text('Unlike');
+                       if ($('#like').text() == "Like") {
+                           $('#like').text('Unlike');
                        } else {
-                           $('#send_data').text('Like');
+                           $('#like').text('Like');
                        }
 {#                       $('#send_data').toggle(function () {#}
 {#                           $(this).text("Like");#}
