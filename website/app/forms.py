@@ -22,7 +22,7 @@ class RegisterForm(FlaskForm):
     # re_captcha = RecaptchaField()
 
 
-class AddFlavoringForm(FlaskForm):
+class AddFlavoringToInvForm(FlaskForm):
     flavoring_name = StringField('Flavoring', [DataRequired()])
     producer_name = StringField('Producer', [DataRequired()])
     amount = FloatField('Amount', [DataRequired()])
