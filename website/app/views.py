@@ -167,7 +167,8 @@ def flavorings_list_page():
         title=site_name,
         user=g.user,
         flavorings_list=flavorings_list,
-        form=form
+        form=form,
+        action="Add"
     )
 
 
@@ -287,7 +288,8 @@ def nicotine_list_page():
         title=site_name,
         user=g.user,
         nicotine_list=nicotine_list,
-        form=form
+        form=form,
+        action="Add"
     )
 
 
