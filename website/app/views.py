@@ -176,6 +176,46 @@ def flavorings_list_page():
 #     form = AddNicotineToInvForm()
 #     return render_template("nicotine_list.html", action="Add", data_type="nicotine", form=form)
 
+@app.route("/Users/<user_name>/flavoring/<int:flavoring_id>", methods=['GET', 'POST'])
+def edit_flavoring(flavoring_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    flavoring = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).\
+        join(models.Flavoring).\
+        filter_by(id=flavoring_id).\
+        first()
+    form = AddFlavoringToInvForm(obj=flavoring)
+    if request.method == 'POST':
+        form.populate_obj(flavoring)
+        db.session.add(flavoring)
+        db.session.commit()
+        return redirect(url_for('users_flavorings_inventory', user_name=g.user.user_name))
+    return render_template("user_flavorings_inventory.html",
+                           action="Edit",
+                           data_type=flavoring.id,
+                           form=form,
+                           user=g.user,
+                           flavoring=flavoring.flavoring)
+
+
+@app.route("/Users/<user_name>/flavoring/<int:flavoring_id>/delete", methods=['GET', 'POST'])
+def delete_flavoring(flavoring_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    form = AddFlavoringToInvForm()
+    flavoring = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id, flavoring_id=flavoring_id).first()
+    if request.method == 'POST':
+        db.session.delete(flavoring)
+        db.session.commit()
+        return redirect(url_for('users_flavorings_inventory', user_name=g.user.user_name))
+    return render_template("user_flavorings_inventory.html",
+                           action="Delete",
+                           user=g.user,
+                           flavoring=flavoring.flavoring,
+                           form=form)
+
 
 @app.route("/Users/<user_name>/nicotine/<int:nicotine_id>", methods=['GET', 'POST'])
 def edit_nicotine(nicotine_id, user_name):
@@ -315,7 +355,8 @@ def users_flavorings_inventory(user_name):
         form=form,
         title=site_name,
         user=g.user,
-        flavorings_inventory_list=users_flavorings_inv
+        flavorings_inventory_list=users_flavorings_inv,
+        action="Add"
     )
 
 
