@@ -240,6 +240,24 @@ def edit_nicotine(nicotine_id, user_name):
                            nicotine=nicotine.nicotine)
 
 
+@app.route("/Users/<user_name>/nicotine/<int:nicotine_id>/delete", methods=['GET', 'POST'])
+def delete_nicotine(nicotine_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    form = AddNicotineToInvForm()
+    nicotine = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id, nicotine_id=nicotine_id).first()
+    if request.method == 'POST':
+        db.session.delete(nicotine)
+        db.session.commit()
+        return redirect(url_for('users_nicotine_inventory', user_name=g.user.user_name))
+    return render_template("user_nicotine_inventory.html",
+                           action="Delete",
+                           user=g.user,
+                           nicotine=nicotine.nicotine,
+                           form=form)
+
+
 @app.route('/nicotine_list', methods=['GET', 'POST'])
 def nicotine_list_page():
     """

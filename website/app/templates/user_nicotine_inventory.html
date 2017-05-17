@@ -8,6 +8,14 @@
             {{ render_field(form.amount, class="input text") }}
             <p><input type="submit" value="{{ action }} nicotine" class="button green"></p>
         </form>
+    {% elif action=="Delete"%}
+
+        <p>Press button below to delete Nicotine by <b>{{ nicotine.producer_name }}</b> concentration <b>{{ nicotine.concentration }} mg/ml</b> from your inventory</p>
+        <form action="{{ form_action }}" method="{{ method | d("POST") }}" class="form">
+            {{ form.csrf_token }}
+            <p><input type="submit" value="{{ action }} nicotine" class="button green"></p>
+        </form>
+
     {% else %}
         <form action="{{ form_action }}" method="{{ method | d("POST") }}" class="form">
             {{ form.csrf_token }}
@@ -32,6 +40,11 @@
                         user_name=user.user_name,
                         nicotine_id=users_nicotine.nicotine.id) }}">
                         <input type="submit" value="Edit" />
+                    </form>
+                    <form action="{{ url_for('delete_nicotine',
+                        user_name=user.user_name,
+                        nicotine_id=users_nicotine.nicotine.id) }}">
+                        <input type="submit" value="Delete" />
                     </form>
                 </li>
                 {% endfor %}
