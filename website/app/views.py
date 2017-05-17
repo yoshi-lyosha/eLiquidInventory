@@ -36,29 +36,14 @@ def eliquid_comp(eliquid_id):
     site_name = 'eLiquidInventory'
     eliquid = models.ELiquid.query.filter_by(id=eliquid_id).first()
     composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
-    # # проверяем, есть ли эта жижка в фэйворитс
-    # if request.method == 'POST':
-    #     if g.user.user_name is 'Guest':
-    #         flash('For doing this action, you need to be logged in!')
-    #     else:
-    #         if request.form['submit'] == 'Like it':
-    #             new_favourite = models.UsersFavouriteELiquids(user_id=g.user.id, eliquid_id=eliquid_id)
-    #             db.session.add(new_favourite)
-    #             db.session.commit()
-    #             # обновляем значение favourite для темплейта
-    #             favourite = new_favourite
-    #         if request.form['submit'] == 'Unlike it':
-    #             db.session.delete(favourite)
-    #             db.session.commit()
-    #             # обновляем значение favourite для темплейта
-    #             favourite = None
+    favourite = models.UsersFavouriteELiquids.query.filter_by(user_id=g.user.id, eliquid_id=eliquid_id).first()
     return render_template(
         "eliquid_comp.html",
         eliquid=eliquid,
         title=site_name,
         composition=composition_list,
         user=g.user,
-        # favourite=favourite
+        favourite=favourite
     )
 
 
@@ -186,7 +171,94 @@ def flavorings_list_page():
     )
 
 
-@app.route('/nicotine_list')
+# @app.route("/nicotine/", methods=['GET', 'POST'])
+# def add_nicotine():
+#     form = AddNicotineToInvForm()
+#     return render_template("nicotine_list.html", action="Add", data_type="nicotine", form=form)
+
+@app.route("/Users/<user_name>/flavoring/<int:flavoring_id>", methods=['GET', 'POST'])
+def edit_flavoring(flavoring_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    flavoring = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).\
+        join(models.Flavoring).\
+        filter_by(id=flavoring_id).\
+        first()
+    form = AddFlavoringToInvForm(obj=flavoring)
+    if request.method == 'POST':
+        form.populate_obj(flavoring)
+        db.session.add(flavoring)
+        db.session.commit()
+        return redirect(url_for('users_flavorings_inventory', user_name=g.user.user_name))
+    return render_template("user_flavorings_inventory.html",
+                           action="Edit",
+                           data_type=flavoring.id,
+                           form=form,
+                           user=g.user,
+                           flavoring=flavoring.flavoring)
+
+
+@app.route("/Users/<user_name>/flavoring/<int:flavoring_id>/delete", methods=['GET', 'POST'])
+def delete_flavoring(flavoring_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    form = AddFlavoringToInvForm()
+    flavoring = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id, flavoring_id=flavoring_id).first()
+    if request.method == 'POST':
+        db.session.delete(flavoring)
+        db.session.commit()
+        return redirect(url_for('users_flavorings_inventory', user_name=g.user.user_name))
+    return render_template("user_flavorings_inventory.html",
+                           action="Delete",
+                           user=g.user,
+                           flavoring=flavoring.flavoring,
+                           form=form)
+
+
+@app.route("/Users/<user_name>/nicotine/<int:nicotine_id>", methods=['GET', 'POST'])
+def edit_nicotine(nicotine_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    nicotine = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id).\
+        join(models.Nicotine).\
+        filter_by(id=nicotine_id).\
+        first()
+    form = AddNicotineToInvForm(obj=nicotine)
+    if request.method == 'POST':
+        form.populate_obj(nicotine)
+        db.session.add(nicotine)
+        db.session.commit()
+        return redirect(url_for('users_nicotine_inventory', user_name=g.user.user_name))
+    return render_template("user_nicotine_inventory.html",
+                           action="Edit",
+                           data_type=nicotine.id,
+                           form=form,
+                           user=g.user,
+                           nicotine=nicotine.nicotine)
+
+
+@app.route("/Users/<user_name>/nicotine/<int:nicotine_id>/delete", methods=['GET', 'POST'])
+def delete_nicotine(nicotine_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    form = AddNicotineToInvForm()
+    nicotine = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id, nicotine_id=nicotine_id).first()
+    if request.method == 'POST':
+        db.session.delete(nicotine)
+        db.session.commit()
+        return redirect(url_for('users_nicotine_inventory', user_name=g.user.user_name))
+    return render_template("user_nicotine_inventory.html",
+                           action="Delete",
+                           user=g.user,
+                           nicotine=nicotine.nicotine,
+                           form=form)
+
+
+@app.route('/nicotine_list', methods=['GET', 'POST'])
 def nicotine_list_page():
     """
     List of all nicotine
@@ -194,27 +266,77 @@ def nicotine_list_page():
     """
     site_name = 'eLiquidInventory'
     nicotine_list = models.Nicotine.query.all()
+    form = AddNicotineForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        if g.user.user_name is 'Guest':
+                flash('For doing this action, you need to be logged in!')
+        else:
+            producer = request.form['producer_name']
+            concentration = request.form['concentration']
+            nicotine = models.Nicotine.query.filter_by(producer_name=producer, concentration=concentration).first()
+            if nicotine:
+                flash('Nicotine already exists.')
+            else:
+                new_nicotine = models.Nicotine(producer_name=producer, concentration=concentration)
+                db.session.add(new_nicotine)
+                db.session.commit()
+                return redirect('nicotine_list')
 
     return render_template(
         "nicotine_list.html",
         title=site_name,
         user=g.user,
-        nicotine_list=nicotine_list
+        nicotine_list=nicotine_list,
+        form=form
     )
 
 
-@app.route('/Users/<user_name>/nickotine_inventory')
+@app.route('/Users/<user_name>/nicotine_inventory', methods=['GET', 'POST'])
 def users_nicotine_inventory(user_name):
     if g.user.user_name is 'Guest':
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
+    form = AddNicotineToInvForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        producer = request.form['producer_name']
+        concentration = request.form['concentration']
+        amount = request.form['amount']
+        nicotine = models.Nicotine.query.filter_by(producer_name=producer,
+                                                   concentration=concentration).first()
+        if nicotine:
+            nicotine_exists = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id).\
+                join(models.Nicotine).\
+                filter_by(producer_name=producer,
+                          concentration=concentration).\
+                first()
+            if nicotine_exists and nicotine_exists.amount != 0:
+                flash('You have this already')
+            elif nicotine_exists and nicotine_exists.amount == 0:
+                flash('Updates {} by {} from {} to {}'.format(nicotine.producer_name,
+                                                              nicotine.concentration,
+                                                              nicotine_exists.amount,
+                                                              amount))
+                nicotine_exists.amount = amount
+                db.session.commit()
+            else:
+                new_record = models.UsersNicotineInventory(nicotine_id=nicotine.id,
+                                                           user_id=g.user.id,
+                                                           amount=amount)
+                db.session.add(new_record)
+                db.session.commit()
+        else:
+            flash('We don\'t have this :(')
+
     site_name = 'eLiquidInventory'
     users_nicotine_inv = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id).all()
     return render_template(
         "user_nicotine_inventory.html",
         title=site_name,
         user=g.user,
-        nicotine_inventory_list=users_nicotine_inv
+        nicotine_inventory_list=users_nicotine_inv,
+        form=form,
+        action="Add",
+        data_type="Nicotine"
     )
 
 
@@ -241,6 +363,8 @@ def users_flavorings_inventory(user_name):
                 new_record = models.UsersFlavoringInventory(flavoring_id=flavoring.id, user_id=g.user.id, amount=amount)
                 db.session.add(new_record)
                 db.session.commit()
+        else:
+            flash('We don\'t have this :(')
 
     site_name = 'eLiquidInventory'
     users_flavorings_inv = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).all()
@@ -249,9 +373,12 @@ def users_flavorings_inventory(user_name):
         form=form,
         title=site_name,
         user=g.user,
-        flavorings_inventory_list=users_flavorings_inv
+        flavorings_inventory_list=users_flavorings_inv,
+        action="Add"
     )
 
+
+# @app.route('')
 
 @app.route('/Users/<user_name>/eliquids_inventory')
 def users_favourite_eliquids(user_name):
