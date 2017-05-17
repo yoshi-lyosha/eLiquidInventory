@@ -171,6 +171,35 @@ def flavorings_list_page():
     )
 
 
+# @app.route("/nicotine/", methods=['GET', 'POST'])
+# def add_nicotine():
+#     form = AddNicotineToInvForm()
+#     return render_template("nicotine_list.html", action="Add", data_type="nicotine", form=form)
+
+
+@app.route("/Users/<user_name>/nicotine/<int:nicotine_id>", methods=['GET', 'POST'])
+def edit_nicotine(nicotine_id, user_name):
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    nicotine = models.UsersNicotineInventory.query.filter_by(user_id=g.user.id).\
+        join(models.Nicotine).\
+        filter_by(id=nicotine_id).\
+        first()
+    form = AddNicotineToInvForm(obj=nicotine)
+    if request.method == 'POST':
+        form.populate_obj(nicotine)
+        db.session.add(nicotine)
+        db.session.commit()
+        return redirect(url_for('users_nicotine_inventory', user_name=g.user.user_name))
+    return render_template("user_nicotine_inventory.html",
+                           action="Edit",
+                           data_type=nicotine.id,
+                           form=form,
+                           user=g.user,
+                           nicotine=nicotine.nicotine)
+
+
 @app.route('/nicotine_list', methods=['GET', 'POST'])
 def nicotine_list_page():
     """
@@ -247,7 +276,9 @@ def users_nicotine_inventory(user_name):
         title=site_name,
         user=g.user,
         nicotine_inventory_list=users_nicotine_inv,
-        form=form
+        form=form,
+        action="Add",
+        data_type="Nicotine"
     )
 
 
@@ -287,6 +318,8 @@ def users_flavorings_inventory(user_name):
         flavorings_inventory_list=users_flavorings_inv
     )
 
+
+# @app.route('')
 
 @app.route('/Users/<user_name>/eliquids_inventory')
 def users_favourite_eliquids(user_name):

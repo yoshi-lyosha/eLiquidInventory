@@ -37,3 +37,7 @@ class AddNicotineForm(FlaskForm):
 
 class AddNicotineToInvForm(AddNicotineForm):
     amount = FloatField('Amount', [DataRequired()])
+
+
+class EditNicotineForm(FlaskForm):
+    amount = FloatField('Amount', [DataRequired()])
