@@ -30,5 +30,10 @@ class AddFlavoringToInvForm(AddFlavoringForm):
     amount = FloatField('Amount', [DataRequired()])
 
 
-class AddNicotineToInvForm(FlaskForm):
-    pass
+class AddNicotineForm(FlaskForm):
+    producer_name = StringField('Producer', [DataRequired()])
+    concentration = FloatField('Concentration', [DataRequired()])
+
+
+class AddNicotineToInvForm(AddNicotineForm):
+    amount = FloatField('Amount', [DataRequired()])
