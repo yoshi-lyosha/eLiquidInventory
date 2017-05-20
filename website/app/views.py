@@ -410,3 +410,8 @@ def users_private_eliquids(user_name):
         user=g.user,
         private_eliquids_list=users_private_eliquids_list
     )
+
+
+@app.route('/Users/<user_name>/eliquid_craft/<int:eliquid_id>')
+def eliquid_craft(user_name, eliquid_id):
+    return "test"
