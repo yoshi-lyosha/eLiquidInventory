@@ -1,14 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
+{#    <form action="/eliquids/{{ eliquid.id }}" id="like_form">#}
+{#        {% if not favourite %}#}
+{#            <input type="submit" name="submit" value="Like it">#}
+{#        {% else %}#}
+{#            <input type="submit" name="submit" value="Unlike it">#}
+{#        {% endif %}#}
+{#    </form>#}
     {% if not favourite %}
         <button id="like">Like</button>
     {% else %}
         <button id="like">Unlike</button>
     {% endif %}
 
-    {# нужно сделать кнопкой #}
-    <a href="{{ url_for("eliquid_craft", user_name=user.user_name, eliquid_id=eliquid.id) }}">Craft it!</a>
 
     <h3>{{ eliquid.eliquid_name }}</h3>
     {% if composition %}
@@ -37,9 +42,28 @@
                        } else {
                            $('#like').text('Like');
                        }
+{#                       $('#send_data').toggle(function () {#}
+{#                           $(this).text("Like");#}
+{#                       }, function () {#}
+{#                           $(this).text("Unlike");#}
+{#                       });#}
                    }
                });
            });
        })
+{#        $("#like_form").submit(function (e) {#}
+{#            e.preventDefault()#}
+{#            var $form = $(this),#}
+{#                term = $form.find( "input[name='submit']" ).val(),#}
+{#                url = $form.attr( 'action' );#}
+{#            alert(term + " " + url);#}
+{#            var posting = $.post( url, {submit: term} );#}
+{##}
+{#            posting.done(function() {#}
+{#                if ($( "#send_data" ).text() == "Like it") {#}
+{#                    $ ( "#send_data" ).text("Unlike it");#}
+{#                } else { $ ( "#send_data" ).text("Like it")};#}
+{#            })#}
+{#        });#}
 </script>
 {% endblock %}

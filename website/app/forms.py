@@ -60,3 +60,12 @@ class AddEliquidForm(FlaskForm):
     # flavorings = FieldList(FormField(ManyForm), min_entries=1)
     amount = FloatField('Amount', [DataRequired()])
     status = SelectField('Status', choices=[('1', 'PUBLIC'), ('0', 'PRIVATE')])
+
+    
+class EliquidCraftForm(FlaskForm):
+    quantity_of_pg = FloatField('PG', [DataRequired()])
+    quantity_of_vg = FloatField('VG', [DataRequired()])
+    # nicotine = BooleanField('Nicotine', [DataRequired()])
+    # nicotine_base = SelectField('Nicotine Base', [DataRequired()], choices=[('pg', 'PG'), ('vg', 'VG')])
+    # quantity_of_nicotine = FloatField('Nicotine', [DataRequired()])
+    final_amount = FloatField('Amount', [DataRequired()])
