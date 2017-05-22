@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-        {% from "macros.html" import render_field %}
+    {% from "macros.html" import render_field %}
     <form method="POST" class="form">
     {{ form.csrf_token }}
             {{ render_field(form.eliquid_name, class="input text") }}
@@ -9,6 +9,9 @@
             {{ render_field(form.status, class="input text") }}
         <input type="submit" value="Add eLiquid" class="button green">
     </form>
+
+    <a href="{{ url_for('eliquid_create', user_name=user.user_name)}}">Create new eLiquid</a>
+
     <h3>Here is the list of eLiquids</h3>
     {% if eliquid_list %}
         <ul>

@@ -472,8 +472,6 @@ def eliquid_craft(user_name, eliquid_id):
                 if users_flavoring_amount - eliquid_comp_flav_amount > 0:
                     required_flavorings_amount[eliquid_comp] = eliquid_comp_flav_amount
                     new_users_flavoring_amount[users_flavoring.id] = users_flavoring_amount - eliquid_comp_flav_amount
-                    print(users_flavoring)
-                    print(new_users_flavoring_amount)
                 else:
                     flash('You don\'t have enough; you need {} ml {} by {}, but you have only {}'.format(
                         eliquid_comp_flav_amount, eliquid_comp.flavoring.flavoring_name,
@@ -488,7 +486,6 @@ def eliquid_craft(user_name, eliquid_id):
 
     if request.method == 'POST' and 'submit' in request.form:
         if request.form['submit'] == 'Done!':
-            print(session['new_users_flavoring_amount'])
             for inventory_field_id, amount in session['new_users_flavoring_amount'].items():
                 user_flavoring = models.UsersFlavoringInventory.query.filter_by(id=inventory_field_id).first()
                 user_flavoring.amount = amount
@@ -507,4 +504,82 @@ def eliquid_craft(user_name, eliquid_id):
         flavorings_matching=flavorings_matching,
         required_flavorings_amount=required_flavorings_amount,
         craftable=craftable
+    )
+
+
+@app.route('/Users/<user_name>/eliquid_create', methods=['POST', 'GET'])
+def eliquid_create(user_name):
+    site_name = 'eLiquidInventory'
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('index'))
+    if g.user.user_name != user_name:
+        flash('Stop hecking, plz')
+        return redirect(url_for('index'))
+    create_eliquid_form = EliquidCreateForm()
+    add_flavoring_form = AddFlavoringForm()
+
+    if 'new_eliquid' in session:
+        new_eliquid_name = session['new_eliquid']
+    else:
+        new_eliquid_name = None
+
+    if 'new_eliquid_stash_view' in session:
+        new_eliquid_stash_view = session['new_eliquid_stash_view']
+    else:
+        new_eliquid_stash_view = None
+
+    if request.method == 'POST' and create_eliquid_form.validate_on_submit():
+        session['new_eliquid'] = create_eliquid_form.eliquid_name.data
+        session['new_eliquid_status'] = create_eliquid_form.status.data
+        session['new_eliquid_stash'] = {}
+        session['new_eliquid_stash_view'] = []
+        new_eliquid_name = session['new_eliquid']
+
+    if request.method == 'POST' and add_flavoring_form.validate_on_submit():
+        flavoring_name = add_flavoring_form.flavoring_name.data
+        producer_name = add_flavoring_form.producer_name.data
+        quantity = add_flavoring_form.quantity.data
+        eliquid_flavoring = models.Flavoring.query.filter_by(
+            flavoring_name=flavoring_name, producer_name=producer_name).first()
+        if eliquid_flavoring:
+            if str(eliquid_flavoring.id) not in session['new_eliquid_stash']:
+                session['new_eliquid_stash'][str(eliquid_flavoring.id)] = quantity
+                session['new_eliquid_stash_view'].append(
+                    flavoring_name + ' by ' + producer_name + ' ' + str(quantity) + '%')
+            else:
+                flash('This flavoring is already in the recipe')
+        else:
+            flash('This flavoring does not exist')
+
+    if request.method == 'POST' and 'submit' in request.form:
+        if request.form['submit'] == 'Done!':
+
+            e_liquid = models.ELiquid(
+                eliquid_name=session['new_eliquid'], user=g.user, status=session['new_eliquid_status'])
+            db.session.add(e_liquid)
+
+            for flavoring_id, quantity in session['new_eliquid_stash'].items():
+                new_flavoring = models.Flavoring.query.filter_by(id=int(flavoring_id)).first()
+                component = models.ELiquidComposition(e_liquid=e_liquid, flavoring=new_flavoring, quantity=quantity)
+
+                db.session.add(component)
+
+            db.session.commit()
+
+            session.pop('new_eliquid', None)
+            session.pop('new_eliquid_status', None)
+            session.pop('new_eliquid_stash', None)
+            session.pop('new_eliquid_stash_view', None)
+
+            flash('Created!')
+
+    return render_template(
+        "create_new_eliquid.html",
+        new_eliquid_name=new_eliquid_name,
+        title=site_name,
+        user=g.user,
+        create_eliquid_form=create_eliquid_form,
+        add_flavoring_form=add_flavoring_form,
+        new_eliquid_stash_view=new_eliquid_stash_view
     )

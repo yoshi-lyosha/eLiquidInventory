@@ -17,7 +17,7 @@
 [+]/%user%_favorite_eliquids
 [+]/%user%_favorite_eliquids_add_new_item
 
-[ ]/create_new_eliquid
+[+]/create_new_eliquid
 
 [+]/%user%_private_eliquids
 
