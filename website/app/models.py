@@ -1,12 +1,14 @@
-from website.app import db
+from website.app import db, lm
 from website.app.users import constants as USER
 from website.app.eliquids import constants as ELIQUID
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 
     # __tablename__ = 'Users'
     id = db.Column(db.Integer, primary_key=True)
+    social_id = db.Column(db.String(64))
     user_name = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(120))
@@ -20,6 +22,10 @@ class User(db.Model):
                                lazy='dynamic', cascade='all')
     favorite_eliquids = db.relationship('UsersFavouriteELiquids', backref='user',
                                         lazy='dynamic', cascade='all')
+
+    @lm.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
 
     def __repr__(self):
         return '<User %r>' % (self.user_name)
@@ -50,7 +56,7 @@ class Flavoring(db.Model):
                                cascade='all', lazy='dynamic')
 
     def __repr__(self):
-        return '<Flavor %r Producer %r>' % (self.flavor_name, self.producer_name)
+        return '%r by %r' % (self.flavoring_name, self.producer_name)
 
 
 class UsersFlavoringInventory(db.Model):

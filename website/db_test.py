@@ -7,11 +7,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def user_gen():
     print('-----------------')
     print('Adding first user in database')
-    u = models.User(user_name='ALEXEY', email='ALEXEY@ALEXEY.ALEXEY', password=generate_password_hash('Qwer1234'))
+    u = models.User(user_name='alexey', email='alexey@alexey.alexey', password=generate_password_hash('Qwer1234'))
     db.session.add(u)
     db.session.commit()
     print('Adding second user in database')
-    u = models.User(user_name='FEDOS', email='FEDOS@FEDOS.FEDOS', password=generate_password_hash('PESOS'))
+    u = models.User(user_name='fedos', email='fedos@fedos.fedos', password=generate_password_hash('PESOS'))
     db.session.add(u)
     db.session.commit()
 
@@ -298,8 +298,8 @@ def run_autotest_db_stage_2():
     """
     try:
         print('**********\nRunning autotest stage 2\n**********')
-        u1 = models.User.query.filter_by(user_name='FEDOS').first()
-        u2 = models.User.query.filter_by(user_name='ALEXEY').first()
+        u1 = models.User.query.filter_by(user_name='fedos').first()
+        u2 = models.User.query.filter_by(user_name='alexey').first()
         f1 = models.Flavoring.query.filter_by(flavoring_name='Pineapple', producer_name='TPA').first()
         f2 = models.Flavoring.query.filter_by(flavoring_name='Menthol', producer_name='TPA').first()
         f3 = models.Flavoring.query.filter_by(flavoring_name='Mango', producer_name='TPA').first()
@@ -338,8 +338,8 @@ def run_autotest_db_stage_3():
     """
     try:
         print('**********\nRunning autotest stage 3\n**********')
-        u1 = models.User.query.filter_by(user_name='FEDOS').first()
-        u2 = models.User.query.filter_by(user_name='ALEXEY').first()
+        u1 = models.User.query.filter_by(user_name='fedos').first()
+        u2 = models.User.query.filter_by(user_name='alexey').first()
         f1 = models.Flavoring.query.filter_by(flavoring_name='Pineapple', producer_name='TPA').first()
         f2 = models.Flavoring.query.filter_by(flavoring_name='Menthol', producer_name='TPA').first()
         f3 = models.Flavoring.query.filter_by(flavoring_name='Mango', producer_name='TPA').first()

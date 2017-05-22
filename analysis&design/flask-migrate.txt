@@ -22,7 +22,10 @@ python3 website/db_test.py
 
 Использование на винде:
 set PYTHONPATH=D:\Облако\Git\eLiquidInventory\
-export FLASK_APP=website.app
+set FLASK_APP=website.app
 flask db init
 flask db migrate
 flask db upgrade
+
+set PYTHONPATH=D:\Облако\Git\eLiquidInventory\ && set FLASK_APP=website.app
+flask db init && flask db migrate && flask db upgrade

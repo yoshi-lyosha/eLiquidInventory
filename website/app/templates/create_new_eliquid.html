@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+    {% if not new_eliquid_name %}
+        {% from "macros.html" import render_field %}
+        <form method="POST" class="form">
+            {{ create_eliquid_form.csrf_token }}
+            {{ render_field(create_eliquid_form.eliquid_name, class="input text") }}
+            {{ render_field(create_eliquid_form.status, class="input text") }}
+            <input type="submit" value="Add eLiquid" class="button green">
+        </form>
+    {% endif %}
+
+    {% if new_eliquid_name %}
+        {% from "macros.html" import render_field %}
+        <form method="POST" class="form">
+            {{ add_flavoring_form.csrf_token }}
+            {{ render_field(add_flavoring_form.flavoring_name, class="input text") }}
+            {{ render_field(add_flavoring_form.producer_name, class="input text") }}
+            {{ render_field(add_flavoring_form.quantity, class="input text") }}
+
+            <input type="submit" value="Add Flavoring" class="button green">
+        </form>
+    {% endif %}
+
+    {% if new_eliquid_stash_view %}
+         <ul>
+            {% for string in new_eliquid_stash_view %}
+            <li>
+               <p>{{ string }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <form method="POST">
+            <input type="submit" name="submit" value="Done!">
+        </form>
+
+    {% endif %}
+
+{% endblock %}

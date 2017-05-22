@@ -4,16 +4,21 @@
 [+]/login
 [+]/logout
 [+]/flavorings_list
-[+]/nickotine_list
+[+]/nicotine_list
 
-[ ]/create_new_eliquid
+[+]/%user%_nicotine_inventory
+    [+]/%user%_nicotine_inventory_add_new_item
+    [+]/%user%_nicotine_inventory_edit_new_item
+    [+]/%user%_nicotine_inventory_delete_new_item
+[+]/%user%_flavorings_inventory
+    [+]/%user%_flavorings_inventory_add_new_item
+    [+]/%user%_flavorings_inventory_edit_new_item
+    [+]/%user%_flavorings_inventory_delete_new_item
+[+]/%user%_favorite_eliquids
+[+]/%user%_favorite_eliquids_add_new_item
 
-[+]/%user%_nickotine_inventory
-[ ]/%user%_nickotine_inventory_add_new_item
-[ ]/%user%_flavorings_inventory
-[ ]/%user%_flavorings_inventory_add_new_item
-[ ]/%user%_favorite_eliquids
-[ ]/%user%_favorite_eliquids_add_new_item
-[ ]/%user%_private_eliquids
+[+]/create_new_eliquid
 
-[ ]/eliquid_craft
+[+]/%user%_private_eliquids
+
+[+]/eliquid_craft
