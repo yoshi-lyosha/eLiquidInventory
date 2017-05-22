@@ -4,7 +4,19 @@ from website.app import models
 from website.app.forms import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
+
+admin = Admin(app, name='eLiquidInv', template_mode='bootstrap3')
+admin.add_view(ModelView(models.User, db.session))
+admin.add_view(ModelView(models.Nicotine, db.session))
+admin.add_view(ModelView(models.ELiquid, db.session))
+admin.add_view(ModelView(models.ELiquidComposition, db.session))
+admin.add_view(ModelView(models.Flavoring, db.session))
+admin.add_view(ModelView(models.UsersFlavoringInventory, db.session))
+admin.add_view(ModelView(models.UsersNicotineInventory, db.session))
+admin.add_view(ModelView(models.UsersFavouriteELiquids, db.session))
 
 @app.before_request
 def before_request():
