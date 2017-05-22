@@ -487,7 +487,7 @@ def eliquid_create(user_name):
         flash('Stop hecking, plz')
         return redirect(url_for('index'))
     create_eliquid_form = EliquidCreateForm()
-    add_flavoring_form = AddFlavoringForm()
+    add_flavoring_form = AddFlavoringToEliquidForm()
 
     if 'new_eliquid' in session:
         new_eliquid_name = session['new_eliquid']

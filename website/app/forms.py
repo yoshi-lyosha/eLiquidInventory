@@ -57,7 +57,7 @@ class EliquidCreateForm(FlaskForm):
     status = SelectField('Status', choices=[('1', 'PUBLIC'), ('0', 'PRIVATE')])
 
 
-class AddFlavoringForm(FlaskForm):
+class AddFlavoringToEliquidForm(FlaskForm):
     flavoring_name = StringField('Flavoring', [DataRequired()])
     producer_name = StringField('Producer', [DataRequired()])
     quantity = FloatField('Amount', [DataRequired()])
