@@ -182,9 +182,7 @@ def edit_flavoring(flavoring_id, user_name):
     if g.user.user_name is 'Guest':
         flash('You need to be logged in for watching this page')
         return redirect(url_for('index'))
-    flavoring = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id).\
-        join(models.Flavoring).\
-        filter_by(id=flavoring_id).\
+    flavoring = models.UsersFlavoringInventory.query.filter_by(user_id=g.user.id, flavoring_id=flavoring_id).\
         first()
     form = AddFlavoringToInvForm(obj=flavoring)
     if request.method == 'POST':
@@ -194,7 +192,7 @@ def edit_flavoring(flavoring_id, user_name):
         return redirect(url_for('users_flavorings_inventory', user_name=g.user.user_name))
     return render_template("user_flavorings_inventory.html",
                            action="Edit",
-                           data_type=flavoring.id,
+
                            form=form,
                            user=g.user,
                            flavoring=flavoring.flavoring)
@@ -412,6 +410,70 @@ def users_private_eliquids(user_name):
     )
 
 
-@app.route('/Users/<user_name>/eliquid_craft/<int:eliquid_id>')
+@app.route('/Users/<user_name>/eliquid_craft/<int:eliquid_id>', methods=['POST', 'GET'])
 def eliquid_craft(user_name, eliquid_id):
-    return "test"
+    site_name = 'eLiquidInventory'
+    if g.user.user_name is 'Guest':
+        flash('You need to be logged in for watching this page')
+        return redirect(url_for('eliquid_comp', eliquid_id=eliquid_id))
+    form = EliquidCraftForm()
+    composition_list = models.ELiquidComposition.query.filter_by(eliquid_id=eliquid_id)
+    flavorings_matching = {}
+    required_flavorings_amount = {}
+    new_users_flavoring_amount = {}
+    ready_for_craft = True
+
+    for composition_list_string in composition_list:
+        flavoring_from_user_inv = models.UsersFlavoringInventory.query.filter_by(
+            user_id=g.user.id, flavoring=composition_list_string.flavoring).first()
+        flavorings_matching[composition_list_string] = flavoring_from_user_inv
+        if not flavoring_from_user_inv:
+            ready_for_craft = False
+    craftable = False
+
+    if ready_for_craft:
+        if request.method == 'POST' and form.validate_on_submit():
+            # и тут начинается матан
+            quantity_of_pg = form.quantity_of_pg.data
+            quantity_of_vg = form.quantity_of_vg.data
+            final_amount = form.final_amount.data
+            print(quantity_of_pg, quantity_of_vg, final_amount)
+            for eliquid_comp, users_flavoring in flavorings_matching.items():
+                users_flavoring_amount = users_flavoring.amount
+                eliquid_comp_flav_amount = eliquid_comp.quantity * final_amount * 0.01
+                if users_flavoring_amount - eliquid_comp_flav_amount > 0:
+                    required_flavorings_amount[eliquid_comp] = eliquid_comp_flav_amount
+                    new_users_flavoring_amount[users_flavoring] = users_flavoring_amount - eliquid_comp_flav_amount
+                else:
+                    flash('You don\'t have enough; you need {} ml {} by {}, but you have only {}'.format(
+                        eliquid_comp_flav_amount, eliquid_comp.flavoring.flavoring_name,
+                        eliquid_comp.flavoring.producer_name, users_flavoring_amount
+                    ))
+                    craftable = False
+                    break
+            if craftable:
+                ready_for_craft = False
+    else:
+        flash('You can not craft this eliquid')
+
+    # if request.method == 'POST' and request.form['submit'] == 'Done!':
+    #     print('nice')
+
+    # if craftable:
+    #     if request.method == 'POST' and request.form['submit'] == 'Done!':
+    #         for user_flavoring, amount in new_users_flavoring_amount.items():
+    #             user_flavoring.amount = amount
+    #             db.session.add(user_flavoring)
+    #             db.session.commit()
+
+
+
+    return render_template(
+        "eliquid_craft.html",
+        ready_for_craft=ready_for_craft,
+        form=form,
+        title=site_name,
+        user=g.user,
+        flavorings_matching=flavorings_matching,
+        required_flavorings_amount=required_flavorings_amount
+    )

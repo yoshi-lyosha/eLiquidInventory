@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import BooleanField, StringField, PasswordField, FloatField
+from wtforms import BooleanField, StringField, PasswordField, FloatField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Regexp
 
 
@@ -41,3 +41,13 @@ class AddNicotineToInvForm(AddNicotineForm):
 
 class EditNicotineForm(FlaskForm):
     amount = FloatField('Amount', [DataRequired()])
+
+
+class EliquidCraftForm(FlaskForm):
+    quantity_of_pg = FloatField('PG', [DataRequired()])
+    quantity_of_vg = FloatField('VG', [DataRequired()])
+    # nicotine = BooleanField('Nicotine', [DataRequired()])
+    # nicotine_base = SelectField('Nicotine Base', [DataRequired()], choices=[('pg', 'PG'), ('vg', 'VG')])
+    # quantity_of_nicotine = FloatField('Nicotine', [DataRequired()])
+    final_amount = FloatField('Amount', [DataRequired()])
+
