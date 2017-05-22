@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import BooleanField, StringField, PasswordField, FloatField
+from wtforms import BooleanField, StringField, PasswordField, FloatField, SelectField, SelectMultipleField, widgets, FieldList, FormField
 from wtforms.validators import DataRequired, Email, EqualTo, Regexp
 
 
@@ -41,3 +41,22 @@ class AddNicotineToInvForm(AddNicotineForm):
 
 class EditNicotineForm(FlaskForm):
     amount = FloatField('Amount', [DataRequired()])
+
+
+class MultiCheckboxField(SelectMultipleField):
+    """
+    A multiple-select, except displays a list of checkboxes.
+
+    Iterating the field will produce subfields, allowing custom rendering of
+    the enclosed checkbox fields.
+    """
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+
+
+class AddEliquidForm(FlaskForm):
+    eliquid_name = StringField('Name', [DataRequired()])
+    flavorings = MultiCheckboxField('Flavoring', coerce=int)
+    # flavorings = FieldList(FormField(ManyForm), min_entries=1)
+    amount = FloatField('Amount', [DataRequired()])
+    status = SelectField('Status', choices=[('1', 'PUBLIC'), ('0', 'PRIVATE')])
