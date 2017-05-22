@@ -18,16 +18,44 @@ def before_request():
         g.user = models.User(user_name='Guest')
 
 
-@app.route('/', methods=['GET'])
-@app.route('/index', methods=['GET'])
+@app.route('/', methods=['POST', 'GET'])
+@app.route('/index', methods=['POST', 'GET'])
 def index():
     site_name = 'eLiquidInventory'
+    form = AddEliquidForm()
+    form.flavorings.choices = [(flavoring.id, flavoring.flavoring_name) for flavoring in models.Flavoring.query.all()]
+    if request.method == 'POST' and form.validate_on_submit():
+        if g.user.user_name is 'Guest':
+            flash('For doing this action, you need to be logged in!')
+        else:
+            name = request.form['eliquid_name']
+            flavorings = request.form.getlist('flavorings')
+            amount = request.form['amount']
+            status = request.form['status']
+            print(flavorings)
+            # amount = request.form['amount']
+            eLiquid = models.ELiquid.query.filter_by(eliquid_name=name).first()
+            if eLiquid:
+                flash('eLiquid already exists.')
+            else:
+                new_eliquid = models.ELiquid(eliquid_name=name, user_id=g.user.id, status=status)
+                db.session.add(new_eliquid)
+                db.session.commit()
+                for flavoring in flavorings:
+                    new_eliquid_comp = models.ELiquidComposition(eliquid_id=new_eliquid.id, flavoring_id=flavoring, quantity=amount)
+                    db.session.add(new_eliquid_comp)
+                db.session.commit()
+                return redirect(url_for('index'))
+                pass
+
     eliquid_list = models.ELiquid.query.filter_by(status=ELIQUID.PUBLIC)
+
     return render_template(
         "index.html",
         title=site_name,
         user=g.user,
-        eliquid_list=eliquid_list
+        eliquid_list=eliquid_list,
+        form=form
     )
 
 
