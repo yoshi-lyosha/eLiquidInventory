@@ -19,6 +19,6 @@
 
 [ ]/create_new_eliquid
 
-[ ]/%user%_private_eliquids
+[+]/%user%_private_eliquids
 
-[ ]/eliquid_craft
+[+]/eliquid_craft
