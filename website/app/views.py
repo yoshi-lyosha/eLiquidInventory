@@ -4,19 +4,19 @@ from website.app import models
 from website.app.forms import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
-
-
-admin = Admin(app, name='eLiquidInv', template_mode='bootstrap3')
-admin.add_view(ModelView(models.User, db.session))
-admin.add_view(ModelView(models.Nicotine, db.session))
-admin.add_view(ModelView(models.ELiquid, db.session))
-admin.add_view(ModelView(models.ELiquidComposition, db.session))
-admin.add_view(ModelView(models.Flavoring, db.session))
-admin.add_view(ModelView(models.UsersFlavoringInventory, db.session))
-admin.add_view(ModelView(models.UsersNicotineInventory, db.session))
-admin.add_view(ModelView(models.UsersFavouriteELiquids, db.session))
+# from flask_admin import Admin
+# from flask_admin.contrib.sqla import ModelView
+#
+#
+# admin = Admin(app, name='eLiquidInv', template_mode='bootstrap3')
+# admin.add_view(ModelView(models.User, db.session))
+# admin.add_view(ModelView(models.Nicotine, db.session))
+# admin.add_view(ModelView(models.ELiquid, db.session))
+# admin.add_view(ModelView(models.ELiquidComposition, db.session))
+# admin.add_view(ModelView(models.Flavoring, db.session))
+# admin.add_view(ModelView(models.UsersFlavoringInventory, db.session))
+# admin.add_view(ModelView(models.UsersNicotineInventory, db.session))
+# admin.add_view(ModelView(models.UsersFavouriteELiquids, db.session))
 
 @app.before_request
 def before_request():
@@ -548,13 +548,19 @@ def eliquid_create(user_name):
                 db.session.add(component)
 
             db.session.commit()
-
+            status = session['new_eliquid_status']
             session.pop('new_eliquid', None)
             session.pop('new_eliquid_status', None)
             session.pop('new_eliquid_stash', None)
             session.pop('new_eliquid_stash_view', None)
 
-            flash('Created!')
+            if status == '0':
+                flash('Created {}!'.format(new_eliquid_name))
+                return redirect(url_for('users_private_eliquids', user_name=g.user.user_name))
+            if status == '1':
+                flash('Created {}!'.format(new_eliquid_name))
+                return redirect(url_for('index'))
+
 
     return render_template(
         "create_new_eliquid.html",

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+
+    <form action="{{ url_for('eliquid_create', user_name=user.user_name)}}">
+        <input type="submit" value="Create new eLiquid">
+    </form>
+    
     <h3>Here is the list of private {{user.user_name}} eliquids</h3>
     {% if private_eliquids_list %}
       <ul>
