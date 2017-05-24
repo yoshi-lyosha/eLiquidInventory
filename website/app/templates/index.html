@@ -7,15 +7,15 @@
 
     <h3>Here is the list of eLiquids</h3>
     {% if eliquid_list %}
-            {% for eLiquid in eliquid_list %}
-                <div class="container" style="margin-top: 15px">
-                    <div class="col-md-3">
-                <p><a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
+        {% for eLiquid in eliquid_list %}
+            <div class="container" style="margin-top: 15px">
+                <div class="col-sm-3">
+                    <p><a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
                     {{ eLiquid.eliquid_name }}</a></p>
-                    </div>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>No eLiquids are available.</p>
-        {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No eLiquids are available.</p>
+    {% endif %}
 {% endblock %}

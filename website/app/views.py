@@ -529,7 +529,7 @@ def eliquid_create(user_name):
             if str(eliquid_flavoring.id) not in session['new_eliquid_stash']:
                 session['new_eliquid_stash'][str(eliquid_flavoring.id)] = quantity
                 session['new_eliquid_stash_view'].append(
-                    flavoring_name + ' by ' + producer_name + ' ' + str(quantity) + '%')
+                    flavoring_name.capitalize() + ' by ' + producer_name + ' ' + str(quantity) + '%')
             else:
                 flash('This flavoring is already in the recipe')
         else:

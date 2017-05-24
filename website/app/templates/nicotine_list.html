@@ -1,27 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-{#    {% from "macros.html" import render_field %}#}
-{#    <form action="{{ form_action }}" method="{{ method | d("POST") }}" class="form">#}
-{#        {{ form.csrf_token }}#}
-{#        {{ render_field(form.producer_name, class="input text") }}#}
-{#        {{ render_field(form.concentration, class="input text") }}#}
-{#        <p><input type="submit" value="{{ action }} nicotine" class="button green"></p>#}
-{#    </form>#}
     <div class="container">
-        <div class="col-md-6">
+        <div class="col-sm-6">
         {{ wtf.quick_form(form, action=form_action) }}
-        </div></div>
+        </div>
+    </div>
     <h3>Here is the list of Nicotine</h3>
     {% if nicotine_list %}
         {% for nicotine in nicotine_list %}
             <div class="container" style="margin-top: 15px">
-            <div class="col-md-3">
-                {{ nicotine.producer_name }} concentration {{ nicotine.concentration }} mg/ml
-            </div>
+                <div class="col-sm-3">
+                    {{ nicotine.producer_name }} concentration {{ nicotine.concentration }} mg/ml
+                </div>
             </div>
         {% endfor %}
-        {% else %}
-            <p>No Nicotine are available.</p>
-        {% endif %}
 
+    {% else %}
+        <p>No Nicotine are available.</p>
+
+    {% endif %}
 {% endblock %}

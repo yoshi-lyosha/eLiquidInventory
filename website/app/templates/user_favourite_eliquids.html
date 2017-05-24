@@ -2,14 +2,14 @@
 {% block content %}
     <h3>Here is the list of {{user.user_name}} favourite eliquids</h3>
     {% if eliquids_inventory_list %}
-            {% for element in eliquids_inventory_list %}
-                <div class="container" style="margin-top: 15px">
-                    <div class="col-md-3">
-                <a href="{{ url_for('eliquid_comp', eliquid_id=element.eliquid_id)}}">
-                    {{ element.e_liquid.eliquid_name }}</a>
-                    </div>
+        {% for element in eliquids_inventory_list %}
+            <div class="container" style="margin-top: 15px">
+                <div class="col-sm-3">
+            <a href="{{ url_for('eliquid_comp', eliquid_id=element.eliquid_id)}}">
+                {{ element.e_liquid.eliquid_name }}</a>
                 </div>
-            {% endfor %}
+            </div>
+        {% endfor %}
     {% else %}
             <p>No eliquids in inventory are available.</p>
     {% endif %}

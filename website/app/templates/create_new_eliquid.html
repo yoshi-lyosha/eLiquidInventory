@@ -2,13 +2,6 @@
 {% block content %}
 
     {% if not new_eliquid_name %}
-{#        {% from "macros.html" import render_field %}#}
-{#        <form method="POST" class="form" id="create">#}
-{#            {{ create_eliquid_form.csrf_token }}#}
-{#            {{ render_field(create_eliquid_form.eliquid_name, class="input text") }}#}
-{#            {{ render_field(create_eliquid_form.status, class="input text") }}#}
-{#            <input type="submit" value="Add eLiquid" class="button green">#}
-{#        </form>#}
         <div class="container">
         <div class="col-md-6">
         {{ wtf.quick_form(create_eliquid_form, id='create') }}
@@ -16,15 +9,6 @@
     {% endif %}
 
     {% if new_eliquid_name %}
-{#        {% from "macros.html" import render_field %}#}
-{#        <form method="POST" class="form" id="add">#}
-{#            {{ add_flavoring_form.csrf_token }}#}
-{#            {{ render_field(add_flavoring_form.flavoring_name, class="input text") }}#}
-{#            {{ render_field(add_flavoring_form.producer_name, class="input text") }}#}
-{#            {{ render_field(add_flavoring_form.quantity, class="input text") }}#}
-{##}
-{#            <input type="submit" value="Add Flavoring" class="button green">#}
-{#        </form>#}
         <div class="container">
         <div class="col-md-6">
             {{ wtf.quick_form(add_flavoring_form) }}
@@ -36,7 +20,7 @@
     {% if new_eliquid_stash_view %}
             {% for string in new_eliquid_stash_view %}
                 <div class="container" style="margin-top: 15px">
-                    <div class="col-md-3">{{ string }}
+                    <div class="col-sm-3">{{ string }}
                     </div>
                 </div>
             {% endfor %}

@@ -6,16 +6,18 @@
     </form>
 
     <h3>Here is the list of private {{user.user_name}} eliquids</h3>
+
     {% if private_eliquids_list %}
-            {% for eLiquid in private_eliquids_list %}
-                <div class="container" style="margin-top: 15px">
-                    <div class="col-md-3">
-                <a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
-                    {{ eLiquid.eliquid_name }}</a>
-                    </div>
+        {% for eLiquid in private_eliquids_list %}
+            <div class="container" style="margin-top: 15px">
+                <div class="col-sm-3">
+            <a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
+                {{ eLiquid.eliquid_name }}</a>
                 </div>
-            {% endfor %}
+            </div>
+        {% endfor %}
     {% else %}
+
             <p>No eliquids in inventory are available.</p>
     {% endif %}
 
