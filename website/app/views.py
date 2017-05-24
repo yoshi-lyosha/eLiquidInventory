@@ -520,7 +520,7 @@ def eliquid_create(user_name):
         new_eliquid_name = session['new_eliquid']
 
     if request.method == 'POST' and add_flavoring_form.validate_on_submit():
-        flavoring_name = add_flavoring_form.flavoring_name.data
+        flavoring_name = add_flavoring_form.flavoring_name.data.lower()
         producer_name = add_flavoring_form.producer_name.data
         quantity = add_flavoring_form.quantity.data
         eliquid_flavoring = models.Flavoring.query.filter_by(
