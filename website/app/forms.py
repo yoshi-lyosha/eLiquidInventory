@@ -43,25 +43,6 @@ class EditNicotineForm(FlaskForm):
     amount = FloatField('Amount', [DataRequired()])
 
 
-class MultiCheckboxField(SelectMultipleField):
-    """
-    A multiple-select, except displays a list of checkboxes.
-
-    Iterating the field will produce subfields, allowing custom rendering of
-    the enclosed checkbox fields.
-    """
-    widget = widgets.ListWidget(prefix_label=False)
-    option_widget = widgets.CheckboxInput()
-
-
-class AddEliquidForm(FlaskForm):
-    eliquid_name = StringField('Name', [DataRequired()])
-    flavorings = MultiCheckboxField('Flavoring', coerce=int)
-    # flavorings = FieldList(FormField(ManyForm), min_entries=1)
-    amount = FloatField('Amount', [DataRequired()])
-    status = SelectField('Status', choices=[('1', 'PUBLIC'), ('0', 'PRIVATE')])
-
-    
 class EliquidCraftForm(FlaskForm):
     quantity_of_pg = FloatField('PG', [DataRequired()])
     quantity_of_vg = FloatField('VG', [DataRequired()])
@@ -76,5 +57,7 @@ class EliquidCreateForm(FlaskForm):
     status = SelectField('Status', choices=[('1', 'PUBLIC'), ('0', 'PRIVATE')])
 
 
-class AddFlavoringForm(AddFlavoringForm):
+class AddFlavoringToEliquidForm(FlaskForm):
+    flavoring_name = StringField('Flavoring', [DataRequired()])
+    producer_name = StringField('Producer', [DataRequired()])
     quantity = FloatField('Amount', [DataRequired()])
