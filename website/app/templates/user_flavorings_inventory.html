@@ -34,7 +34,7 @@
                 {% for users_flavoring in flavorings_inventory_list %}
                     <li>
                         <p>
-                            {{ users_flavoring.flavoring.flavoring_name }}
+                            {{ users_flavoring.flavoring.flavoring_name.capitalize() }}
                             by {{ users_flavoring.flavoring.producer_name }}
                             {{users_flavoring.amount}}ml
                         </p>
