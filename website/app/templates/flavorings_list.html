@@ -14,13 +14,13 @@
 
     <h3>Here is the list of Flavorings</h3>
     {% if flavorings_list %}
-        <ul>
             {% for flavoring in flavorings_list %}
-            <li>
-                <p>{{ flavoring.flavoring_name.capitalize() }} by {{ flavoring.producer_name }}</p>
-            </li>
+                <div class="container" style="margin-top: 15px">
+                    <div class="col-md-3">
+                        {{ flavoring.flavoring_name.capitalize() }} by {{ flavoring.producer_name }}
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
         {% else %}
             <p>No Flavorings are available.</p>
         {% endif %}
