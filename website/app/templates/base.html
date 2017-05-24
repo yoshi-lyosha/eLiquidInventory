@@ -1,34 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{title}}</title>
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block styles %}
+{{ super() }}
     <link rel="shortcut icon" href="/static/img/favicon_upgrade.ico" />
-    <script
-    src="https://code.jquery.com/jquery-3.2.1.js"
-    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-    crossorigin="anonymous"></script>
-</head>
-<body>
-    <a href="/index"><img src="/static/img/header.png"></a>
-    <div>eLiquidInventory: <a href="/index">Home</a>,
-        <a href="/register">Register</a>
-        <a href="/login">Log in</a>,
-        <a href="/logout">Log out</a>
-        <a href="/flavorings_list">Flavorings list</a>
-        <a href="/nicotine_list">Nicotine list</a>
-    </div>
-    {% if user.user_name != 'Guest' %}
-        <div>Welcome, {{user.user_name.capitalize()}}:
-        <a href="{{ url_for('users_nicotine_inventory', user_name=user.user_name)}}">Your nicotine inventory</a>
-        <a href="{{ url_for('users_flavorings_inventory', user_name=user.user_name)}}">Your flavorings inventory</a>
-        <a href="{{ url_for('users_favourite_eliquids', user_name=user.user_name)}}">Your favourites eLiquids</a>
-        <a href="{{ url_for('users_private_eliquids', user_name=user.user_name)}}">Your private eLiquids</a>
-        {% else %}
-        <div>Welcome, {{user.user_name.capitalize()}}!</div>
-    {% endif %}
-    </div>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+     <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+{% endblock %}
+
+{% block scripts %}
+ <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+{% endblock %}
+{#{% block navbar %}#}
+{#    <div class="container-fluid">#}
+{#    <div class="navbar-header">#}
+{##}
+{#    </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+{% block body %}
+    {% block navbar %}
+        <nav class="navbar">
+        <div class="container col-md-8 col-md-offset-1">
+            <div class="navbar-header col-md-8" style="height: 100px"> {# Вот здесь картинка залезала на меню и я сделал высоту #}
+                <a class="navbar-brand" href="/">
+                    <img src="/static/img/header.png">
+                </a>
+            </div>
+        <div class="col-md-8">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="active"><a href="/index">Home</a></li>
+
+                {% if user.user_name != 'Guest' %}
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                {% else %}
+                <li><a href={{ url_for('register') }}><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+                {% endif %}
+            <li><a href="/flavorings_list">Flavorings list</a></li>
+                <li><a href="/nicotine_list">Nicotine list</a></li>
+            </ul></div>
+
+                {% if user.user_name != 'Guest' %}
+                    <div class="col-md-6">Welcome, {{user.user_name.capitalize()}}!</div>
+                     <div class="col-md-12">
+            <ul class="nav navbar-nav navbar-left">
+                    <li><a href="{{ url_for('users_nicotine_inventory', user_name=user.user_name)}}">Your nicotine inventory</a></li>
+                    <li><a href="{{ url_for('users_flavorings_inventory', user_name=user.user_name)}}">Your flavorings inventory</a></li>
+                    <li><a href="{{ url_for('users_favourite_eliquids', user_name=user.user_name)}}">Your favourites eLiquids</a></li>
+                    <li><a href="{{ url_for('users_private_eliquids', user_name=user.user_name)}}">Your private eLiquids</a></li>                {% else %}
+                    <div class="col-md-6">Welcome, {{user.user_name.capitalize()}}!</div>
+
+
+                {% endif %}
+            </ul>
+        </div>
+
+{#    <a href="/index"><img src="/static/img/header.png"></a>#}
+{#    <div><a href="/index">Home</a>,#}
+{#        <a href="/register">Register</a>#}
+{#        <a href="/login">Log in</a>,#}
+{#        <a href="/logout">Log out</a>#}
+{#        <a href="/flavorings_list">Flavorings list</a>#}
+{#        <a href="/nicotine_list">Nicotine list</a>#}
+{#    </div>#}
+{#    {% if user.user_name != 'Guest' %}#}
+{#        <div>Welcome, {{user.user_name.capitalize()}}:#}
+{#        <a href="{{ url_for('users_nicotine_inventory', user_name=user.user_name)}}">Your nicotine inventory</a>#}
+{#        <a href="{{ url_for('users_flavorings_inventory', user_name=user.user_name)}}">Your flavorings inventory</a>#}
+{#        <a href="{{ url_for('users_favourite_eliquids', user_name=user.user_name)}}">Your favourites eLiquids</a>#}
+{#        <a href="{{ url_for('users_private_eliquids', user_name=user.user_name)}}">Your private eLiquids</a>#}
+{#        {% else %}#}
+{#        <div>Welcome, {{user.user_name.capitalize()}}!</div>#}
+{#    {% endif %}#}
+{#    </div>#}
+        </nav>
+        {% endblock %}
     <hr>
+    <div class="col-md-8 col-md-offset-1">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul>
@@ -39,6 +91,10 @@
     <hr>
     {% endif %}
     {% endwith %}
+    </div>
+    <div class="container-fluid">
+    <div class="col-md-8 col-md-offset-2">
     {% block content %}{% endblock %}
-    </body>
-</html>
+    </div>
+    </div>
+{% endblock %}
