@@ -13,7 +13,7 @@
         <ul>
             {% for flavoring in flavorings_list %}
             <li>
-                <p>{{ flavoring.flavoring_name }} by {{ flavoring.producer_name }}</p>
+                <p>{{ flavoring.flavoring_name.capitalize() }} by {{ flavoring.producer_name }}</p>
             </li>
             {% endfor %}
         </ul>

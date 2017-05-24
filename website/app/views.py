@@ -26,6 +26,7 @@ def before_request():
     g.user = None
     if 'user_id' in session:
         g.user = models.User.query.get(session['user_id'])
+        g.user.user_name = g.user.user_name.capitalize()
     else:
         g.user = models.User(user_name='Guest')
 
@@ -92,7 +93,7 @@ def login():
         user = models.User.query.filter_by(email=form.email.data.lower()).first()
         if user and check_password_hash(user.password, form.password.data):
             session['user_id'] = user.id
-            flash('Welcome, {}'.format(user.user_name))
+            flash('Welcome, {}'.format(user.user_name.capitalize()))
             print('User {} has been logged in'.format(user.user_name))
             return redirect(url_for('index'))
         else:
@@ -167,7 +168,7 @@ def flavorings_list_page():
                 flash('For doing this action, you need to be logged in!')
         else:
             producer = request.form['producer_name']
-            name = request.form['flavoring_name']
+            name = request.form['flavoring_name'].lower()
             flavoring = models.Flavoring.query.filter_by(flavoring_name=name, producer_name=producer).first()
             if flavoring:
                 flash('Flavoring already exists.')
@@ -358,7 +359,7 @@ def users_flavorings_inventory(user_name):
     form = AddFlavoringToInvForm()
     if request.method == 'POST' and form.validate_on_submit():
         producer = request.form['producer_name']
-        name = request.form['flavoring_name']
+        name = request.form['flavoring_name'].lower()
         amount = request.form['amount']
         flavoring = models.Flavoring.query.filter_by(flavoring_name=name, producer_name=producer).first()
         if flavoring:
