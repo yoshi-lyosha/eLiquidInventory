@@ -4,7 +4,19 @@ from website.app import models
 from website.app.forms import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from website.app.eliquids import constants as ELIQUID
-
+# from flask_admin import Admin
+# from flask_admin.contrib.sqla import ModelView
+#
+#
+# admin = Admin(app, name='eLiquidInv', template_mode='bootstrap3')
+# admin.add_view(ModelView(models.User, db.session))
+# admin.add_view(ModelView(models.Nicotine, db.session))
+# admin.add_view(ModelView(models.ELiquid, db.session))
+# admin.add_view(ModelView(models.ELiquidComposition, db.session))
+# admin.add_view(ModelView(models.Flavoring, db.session))
+# admin.add_view(ModelView(models.UsersFlavoringInventory, db.session))
+# admin.add_view(ModelView(models.UsersNicotineInventory, db.session))
+# admin.add_view(ModelView(models.UsersFavouriteELiquids, db.session))
 
 @app.before_request
 def before_request():
@@ -14,6 +26,7 @@ def before_request():
     g.user = None
     if 'user_id' in session:
         g.user = models.User.query.get(session['user_id'])
+        g.user.user_name = g.user.user_name.capitalize()
     else:
         g.user = models.User(user_name='Guest')
 
@@ -80,7 +93,7 @@ def login():
         user = models.User.query.filter_by(email=form.email.data.lower()).first()
         if user and check_password_hash(user.password, form.password.data):
             session['user_id'] = user.id
-            flash('Welcome, {}'.format(user.user_name))
+            flash('Welcome, {}'.format(user.user_name.capitalize()))
             print('User {} has been logged in'.format(user.user_name))
             return redirect(url_for('index'))
         else:
@@ -155,7 +168,7 @@ def flavorings_list_page():
                 flash('For doing this action, you need to be logged in!')
         else:
             producer = request.form['producer_name']
-            name = request.form['flavoring_name']
+            name = request.form['flavoring_name'].lower()
             flavoring = models.Flavoring.query.filter_by(flavoring_name=name, producer_name=producer).first()
             if flavoring:
                 flash('Flavoring already exists.')
@@ -346,7 +359,7 @@ def users_flavorings_inventory(user_name):
     form = AddFlavoringToInvForm()
     if request.method == 'POST' and form.validate_on_submit():
         producer = request.form['producer_name']
-        name = request.form['flavoring_name']
+        name = request.form['flavoring_name'].lower()
         amount = request.form['amount']
         flavoring = models.Flavoring.query.filter_by(flavoring_name=name, producer_name=producer).first()
         if flavoring:
@@ -507,7 +520,7 @@ def eliquid_create(user_name):
         new_eliquid_name = session['new_eliquid']
 
     if request.method == 'POST' and add_flavoring_form.validate_on_submit():
-        flavoring_name = add_flavoring_form.flavoring_name.data
+        flavoring_name = add_flavoring_form.flavoring_name.data.lower()
         producer_name = add_flavoring_form.producer_name.data
         quantity = add_flavoring_form.quantity.data
         eliquid_flavoring = models.Flavoring.query.filter_by(
@@ -516,7 +529,7 @@ def eliquid_create(user_name):
             if str(eliquid_flavoring.id) not in session['new_eliquid_stash']:
                 session['new_eliquid_stash'][str(eliquid_flavoring.id)] = quantity
                 session['new_eliquid_stash_view'].append(
-                    flavoring_name + ' by ' + producer_name + ' ' + str(quantity) + '%')
+                    flavoring_name.capitalize() + ' by ' + producer_name + ' ' + str(quantity) + '%')
             else:
                 flash('This flavoring is already in the recipe')
         else:
@@ -536,13 +549,19 @@ def eliquid_create(user_name):
                 db.session.add(component)
 
             db.session.commit()
-
+            status = session['new_eliquid_status']
             session.pop('new_eliquid', None)
             session.pop('new_eliquid_status', None)
             session.pop('new_eliquid_stash', None)
             session.pop('new_eliquid_stash_view', None)
 
-            flash('Created!')
+            if status == '0':
+                flash('Created {}!'.format(new_eliquid_name))
+                return redirect(url_for('users_private_eliquids', user_name=g.user.user_name))
+            if status == '1':
+                flash('Created {}!'.format(new_eliquid_name))
+                return redirect(url_for('index'))
+
 
     return render_template(
         "create_new_eliquid.html",

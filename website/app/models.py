@@ -84,7 +84,7 @@ class ELiquid(db.Model):
 
     # __tablename__ = 'eLiquids'
     id = db.Column(db.Integer, primary_key=True)
-    eliquid_name = db.Column(db.String(120))
+    eliquid_name = db.Column(db.String(64))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     status = db.Column(db.SmallInteger, default=ELIQUID.PUBLIC)
     components = db.relationship('ELiquidComposition', backref='e_liquid',
@@ -93,7 +93,7 @@ class ELiquid(db.Model):
                                 lazy='dynamic', cascade='all')
 
     def __repr__(self):
-        return '<Flavor %r>' % (self.eliquid_name)
+        return '<Flavor %r>' % self.eliquid_name
 
 
 class ELiquidComposition(db.Model):

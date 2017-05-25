@@ -18,7 +18,7 @@ def user_gen():
 
 def flavorings_gen():
     print('-----------------')
-    a = ['Pineapple', 'Mango', 'Coconut', 'Menthol', 'Banana']
+    a = ['pineapple', 'mango', 'coconut', 'menthol', 'banana']
     b = ['TPA', 'TPA', 'TPA', 'TPA', 'TPA']
     for i in range(len(a)):
         f = models.Flavoring(flavoring_name=a[i], producer_name=b[i])
@@ -300,11 +300,11 @@ def run_autotest_db_stage_2():
         print('**********\nRunning autotest stage 2\n**********')
         u1 = models.User.query.filter_by(user_name='fedos').first()
         u2 = models.User.query.filter_by(user_name='alexey').first()
-        f1 = models.Flavoring.query.filter_by(flavoring_name='Pineapple', producer_name='TPA').first()
-        f2 = models.Flavoring.query.filter_by(flavoring_name='Menthol', producer_name='TPA').first()
-        f3 = models.Flavoring.query.filter_by(flavoring_name='Mango', producer_name='TPA').first()
-        f4 = models.Flavoring.query.filter_by(flavoring_name='Banana', producer_name='TPA').first()
-        f5 = models.Flavoring.query.filter_by(flavoring_name='Coconut', producer_name='TPA').first()
+        f1 = models.Flavoring.query.filter_by(flavoring_name='pineapple', producer_name='TPA').first()
+        f2 = models.Flavoring.query.filter_by(flavoring_name='menthol', producer_name='TPA').first()
+        f3 = models.Flavoring.query.filter_by(flavoring_name='mango', producer_name='TPA').first()
+        f4 = models.Flavoring.query.filter_by(flavoring_name='banana', producer_name='TPA').first()
+        f5 = models.Flavoring.query.filter_by(flavoring_name='coconut', producer_name='TPA').first()
         n1 = models.Nicotine.query.filter_by(producer_name='Xian', concentration='36').first()
         n2 = models.Nicotine.query.filter_by(producer_name='Merc', concentration='36').first()
         n3 = models.Nicotine.query.filter_by(producer_name='Alchemy', concentration='100').first()
@@ -340,11 +340,11 @@ def run_autotest_db_stage_3():
         print('**********\nRunning autotest stage 3\n**********')
         u1 = models.User.query.filter_by(user_name='fedos').first()
         u2 = models.User.query.filter_by(user_name='alexey').first()
-        f1 = models.Flavoring.query.filter_by(flavoring_name='Pineapple', producer_name='TPA').first()
-        f2 = models.Flavoring.query.filter_by(flavoring_name='Menthol', producer_name='TPA').first()
-        f3 = models.Flavoring.query.filter_by(flavoring_name='Mango', producer_name='TPA').first()
-        f4 = models.Flavoring.query.filter_by(flavoring_name='Banana', producer_name='TPA').first()
-        f5 = models.Flavoring.query.filter_by(flavoring_name='Coconut', producer_name='TPA').first()
+        f1 = models.Flavoring.query.filter_by(flavoring_name='pineapple', producer_name='TPA').first()
+        f2 = models.Flavoring.query.filter_by(flavoring_name='menthol', producer_name='TPA').first()
+        f3 = models.Flavoring.query.filter_by(flavoring_name='mango', producer_name='TPA').first()
+        f4 = models.Flavoring.query.filter_by(flavoring_name='banana', producer_name='TPA').first()
+        f5 = models.Flavoring.query.filter_by(flavoring_name='coconut', producer_name='TPA').first()
 
         eliquid_create_by_user(u2, 'top zhizhka, eboiii', {f1: 5, f2: 1, f3: 5, f4: 3, f5: 1}, public=False)
         eliquid_create_by_user(u1, 'top zhizhka, eboiii 2', {f1: 5, f2: 1, f3: 5, f4: 3, f5: 1})

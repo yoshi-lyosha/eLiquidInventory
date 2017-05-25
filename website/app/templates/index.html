@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <a href="{{ url_for('eliquid_create', user_name=user.user_name)}}">Create new eLiquid</a>
+    <form action="{{ url_for('eliquid_create', user_name=user.user_name)}}">
+        <input type="submit" value="Create new eLiquid" class="btn btn-primary">
+    </form>
 
     <h3>Here is the list of eLiquids</h3>
     {% if eliquid_list %}
-        <ul>
-            {% for eLiquid in eliquid_list %}
-            <li>
-                <p><a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
+        {% for eLiquid in eliquid_list %}
+            <div class="container" style="margin-top: 15px">
+                <div class="col-sm-3">
+                    <p><a href="{{ url_for('eliquid_comp', eliquid_id=eLiquid.id)}}">
                     {{ eLiquid.eliquid_name }}</a></p>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-            <p>No eLiquids are available.</p>
-        {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No eLiquids are available.</p>
+    {% endif %}
 {% endblock %}

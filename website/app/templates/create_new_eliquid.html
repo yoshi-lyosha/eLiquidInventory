@@ -2,40 +2,53 @@
 {% block content %}
 
     {% if not new_eliquid_name %}
-        {% from "macros.html" import render_field %}
-        <form method="POST" class="form">
-            {{ create_eliquid_form.csrf_token }}
-            {{ render_field(create_eliquid_form.eliquid_name, class="input text") }}
-            {{ render_field(create_eliquid_form.status, class="input text") }}
-            <input type="submit" value="Add eLiquid" class="button green">
-        </form>
+        <div class="container">
+        <div class="col-md-6">
+        {{ wtf.quick_form(create_eliquid_form, id='create') }}
+        </div></div>
     {% endif %}
 
     {% if new_eliquid_name %}
-        {% from "macros.html" import render_field %}
-        <form method="POST" class="form">
-            {{ add_flavoring_form.csrf_token }}
-            {{ render_field(add_flavoring_form.flavoring_name, class="input text") }}
-            {{ render_field(add_flavoring_form.producer_name, class="input text") }}
-            {{ render_field(add_flavoring_form.quantity, class="input text") }}
+        <div class="container">
+        <div class="col-md-6">
+            {{ wtf.quick_form(add_flavoring_form) }}
+        </div>
+        </div>
 
-            <input type="submit" value="Add Flavoring" class="button green">
-        </form>
     {% endif %}
 
     {% if new_eliquid_stash_view %}
-         <ul>
             {% for string in new_eliquid_stash_view %}
-            <li>
-               <p>{{ string }}</p>
-            </li>
+                <div class="container" style="margin-top: 15px">
+                    <div class="col-sm-3">{{ string }}
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
 
-        <form method="POST">
-            <input type="submit" name="submit" value="Done!">
+        <form method="POST" id="done" style="margin-top: 15px">
+            <input type="submit" name="submit" value="Done!" class="btn btn-success">
         </form>
 
     {% endif %}
+<script>
+    $(function() {
+    $("#create").submit(function(event) {
+        // Stop form from submitting normally
+        event.preventDefault();
+        var createForm = $(this);
+        // Send the data using post
+        var posting = $.post( '{{ url_for('eliquid_create', user_name=user.user_name) }}', createForm.serialize() );
+        // if success:
+        posting.done(function(data) {
+            // success actions, maybe change submit button to 'friend added' or whatever
+            location.reload();
+        });
+        // if failure:
+        posting.fail(function(data) {
+            alert('Failed');
+        });
+    });
+});
 
+</script>
 {% endblock %}

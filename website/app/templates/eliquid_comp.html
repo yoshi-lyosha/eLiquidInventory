@@ -1,22 +1,25 @@
 {% extends "base.html" %}
-
 {% block content %}
+    <form>
     {% if user.user_name != 'Guest' %}
         {% if not favourite %}
-            <button id="like">Like</button>
+            <button id="like" class="btn btn-success">Like</button>
         {% else %}
-            <button id="like">Unlike</button>
+            <button id="like" class="btn btn-danger">Unlike</button>
         {% endif %}
     {% endif %}
     {# нужно сделать кнопкой #}
-    <a href="{{ url_for("eliquid_craft", user_name=user.user_name, eliquid_id=eliquid.id) }}">Craft it!</a>
 
+        <input formaction="{{ url_for("eliquid_craft", user_name=user.user_name, eliquid_id=eliquid.id) }}"
+               type="submit" value="Craft it!" class="btn btn-info">
+{#    <a href="{{ url_for("eliquid_craft", user_name=user.user_name, eliquid_id=eliquid.id) }}">Craft it!</a>#}
+</form>
     <h3>{{ eliquid.eliquid_name }}</h3>
     {% if composition %}
         <ul>
             {% for element in composition %}
             <li>
-                <p>{{ element.flavoring.flavoring_name }} by {{ element.flavoring.producer_name }}
+                <p>{{ element.flavoring.flavoring_name.capitalize() }} by {{ element.flavoring.producer_name }}
                     {{ element.quantity }}%</p>
             </li>
             {% endfor %}
@@ -24,7 +27,7 @@
     {% else %}
         <p>wtf?</p>
     {% endif %}
-<script>
+<script type="text/javascript">
        $(document).ready(function() {
            $('#like').on('click', function () {
                $.post({
@@ -35,8 +38,10 @@
                    success: function () {
                        if ($('#like').text() == "Like") {
                            $('#like').text('Unlike');
+                           $('#like').removeClass('btn-success').addClass('btn-danger');
                        } else {
                            $('#like').text('Like');
+                           $('#like').removeClass('btn-danger').addClass('btn-success');
                        }
                    }
                });
@@ -44,3 +49,6 @@
        })
 </script>
 {% endblock %}
+
+
+
